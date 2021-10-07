@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} LogIn {% endblock %}
+
+{% block body %}
+
+<body class="bg-gradient-primary" style="min-height: 500px;height: 500px;">
+    <section class="login-clean" style="height: 613px;">
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <h2 class="visually-hidden">Login Form</h2>
+            <div class="illustration"><i class="icon ion-ios-navigate" style="border-color: rgb(244, 71, 107);border-top-color: rgb(244,;border-right-color: 71,;border-bottom-color: 107);border-left-color: 71,;color: rgb(78,115,223);"></i></div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                            {{message}}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {{form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.username.label }}
+                {{ form.username(class="form-control",style="color: rgb(133,135,150);font-size: 16px;")}}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label }}
+                {{ form.password(class="form-control")}}
+            </div>
+            <div class="mb-3">
+                {{ form.submit(class="btn btn-primary d-block w-100 form-control", style="color: var(--bs-gray-100);background: var(--bs-blue);")}}
+            </div>
+            <a class="forgot" href="forgotPassword">Olvido su contraseña?</a>
+        </form>
+    </section>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bs-init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+
+{% endblock %}

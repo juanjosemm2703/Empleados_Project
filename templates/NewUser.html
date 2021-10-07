@@ -1,0 +1,123 @@
+{% extends 'base_after.html' %}
+{% block title %} New User {% endblock %}
+{% block container %}
+<h3 class="text-dark mb-4">Nuevo Usuario</h3>
+<form>
+    <div class="row mb-3">
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="../static/img/avatars/man-avatar-profile-vector-21372076.jpeg" width="160" height="160">
+                    <div class="mb-3"><input class="form-control" type="file"></div><button class="btn btn-primary" type="submit">Agregar Usuario</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="text-primary fw-bold m-0">Información Basica</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Nombre:</p><input class="form-control" type="text" id="firstname">
+                                    </div>
+                                </div>
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Apellido:</p><input class="form-control" type="text" id="lastname">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Cedula:</p><input class="form-control" type="number" id="cedulaCiudadania">
+                                    </div>
+                                </div>
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Correo Electronico:</p><input class="form-control" type="email" id="email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-3">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Información Laboral</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p><input class="form-control" type="text" id="cargo">
+                                    </div>
+                                </div>
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p><input class="form-control" type="text" id="dependencia">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p><input class="form-control" type="text" id="tipoContrato">
+                                    </div>
+                                </div>
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Rol:</p><select class="form-select" id="rol" name="rol">
+                                            <option value="0" selected="">Empleado</option>
+                                            <option value="1">Administrador</option>
+                                            <option value="2">Super Administrador</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Fecha Termino Contrato:</p><input class="form-control" id="contratoDate" type="date">
+                                    </div>
+                                </div>
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Fecha Ingreso:</p><input class="form-control" id="ingresoDate" type="date">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow" style="margin-bottom: 16px;">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Información de Contacto</p>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p><input class="form-control" type="text">
+                                <div class="row">
+                                    <div class="col" style="text-align: left;margin: auto;">
+                                        <div>
+                                            <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p><input class="form-control" type="tel" id="cellphone">
+                                        </div>
+                                    </div>
+                                    <div class="col" style="text-align: left;margin: auto;">
+                                        <div>
+                                            <p class="text-secondary fw-bold" style="margin: auto;">Telefono fijo:</p><input class="form-control" type="tel" id="phoneNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
