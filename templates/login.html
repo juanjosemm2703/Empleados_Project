@@ -5,16 +5,17 @@
 {% block body %}
 
 <body class="bg-gradient-primary" style="min-height: 500px;height: 500px;">
-    <section class="login-clean" style="height: 613px;">
-
-
-        <form method="POST" action="{{ url_for('login') }}">
+    <section class="login-clean" style="height: 613px;background: url('/static/img/background.png') center / cover no-repeat, var(--bs-gray-200);color: var(--bs-gray-dark);">
+        <form method="POST" style="border-radius: 30px;margin-top: 10px;border: 0.5px solid var(--bs-gray-300);height: 568px;transform: translateY(-54px);max-width: 500px;" action="{{ url_for('login') }}">
             <h2 class="visually-hidden">Login Form</h2>
-            <div class="illustration"><i class="icon ion-ios-navigate" style="border-color: rgb(244, 71, 107);border-top-color: rgb(244,;border-right-color: 71,;border-bottom-color: 107);border-left-color: 71,;color: rgb(78,115,223);"></i></div>
+            <div class="row" style="transform: translateY(-31px) scale(0.60);margin-top: -69px;">
+                <img src="/static/img/logo.png" style="transform: scale(0.70);"/>
+            </div>
+            <label class="form-label" style="color: var(--bs-blue);font-size: 42px;transform: translateX(93px) translateY(-54px);margin-top: -64px;font-weight: bold;">Bienvenido</label>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}" role="alert">
+                        <div class="alert alert-{{ category }}" style="margin-top: -64px; text-align: center;" role="alert">
                             {{message}}
                         </div>
                         {% endfor %}
@@ -22,17 +23,15 @@
                 {% endwith %}
                 {{form.hidden_tag() }}
             <div class="mb-3">
-                {{ form.username.label }}
-                {{ form.username(class="form-control",style="color: rgb(133,135,150);font-size: 16px;")}}
+                {{ form.username(class="form-control", placeholder= "Nombre de Usuario", style="color: var(--bs-gray-900);font-size: 16px;width: 250px;margin-left: 84px;text-align: center;")}}
             </div>
             <div class="mb-3">
-                {{ form.password.label }}
-                {{ form.password(class="form-control")}}
+                {{ form.password(class="form-control", placeholder="Contraseña", style="color: var(--bs-gray-900);width: 250px;margin-left: 84px;text-align: center;") }}
             </div>
             <div class="mb-3">
-                {{ form.submit(class="btn btn-primary d-block w-100 form-control", style="color: var(--bs-gray-100);background: var(--bs-blue);")}}
+                {{ form.submit(class="btn btn-primary d-block w-100 form-control", style="color: var(--bs-gray-100);background: var(--bs-blue);min-width: 120px;max-width: 24px;margin: 27px 0px 0px;margin-left: 70px;height: 39px;border-radius: 23px;padding: 8px;transform: translateX(81px);")}}
             </div>
-            <a class="forgot" href="forgotPassword">Olvido su contraseña?</a>
+            <a class="forgot" href="{{ url_for('ForgotPassword') }}">¿Olvidó su contraseña?</a>
         </form>
     </section>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>

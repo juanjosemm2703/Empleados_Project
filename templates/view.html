@@ -1,7 +1,7 @@
 {% extends 'base_after.html' %}
 {% block title %} View Profile {% endblock %}
 {% block container %}
-<h3 class="text-dark mb-4">Usuario : Angelica Ramos</h3>
+<h3 class="text-dark mb-4">Usuario : {{ userEdit.nombre }} {{ userEdit.apellido }}</h3>
 <div class="row mb-3">
     <div class="col-lg-4">
         <div class="card mb-3">
@@ -15,23 +15,25 @@
             </div>
             <div class="card-body">
                 <h4 class="small fw-bold">Nombre Completo:</h4>
-                <h4 class="small">Angelica Ramos</h4>
+                <h4 class="small">{{ userEdit.nombre }} {{ userEdit.apellido }}</h4>
                 <h4 class="small fw-bold">Cédula de Ciudadania:</h4>
-                <h4 class="small">0.000.000.000</h4>
+                <h4 class="small">{{ userEdit.cedula }}</h4>
                 <h4 class="small fw-bold">Correo Electronico:</h4>
-                <h4 class="small">angelicaramos@uninorte.edu.co</h4>
+                <h4 class="small">{{ userEdit.correo }}</h4>
                 <h4 class="small fw-bold">Id Usuario:</h4>
-                <h4 class="small">67890</h4>
+                <h4 class="small">{{ userEdit.id }}</h4>
                 <h4 class="small fw-bold">Contraseña<br></h4>
-                <a class="card-link" href="#offcanvas-1" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvas-1">
+                <a class="card-link" href="{{url_for('nueva_contrasena', id_userEdit=userEdit.id, user=user)}}" target="_blank"onclick="return confirm(&#39;Se enviara una nueva contraseña al correo del usuario ?&#39;)">
                     <h4 class="small">Cambiar contraseña</h4>
                 </a>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col" style="text-align: center;"><a class="btn btn-primary btn-sm" role="button" style="margin: auto;" href="edit.html">Editar</a></div>
                     <div class="col" style="text-align: center;">
-                        <form><button class="btn btn-danger btn-sm" type="submit" style="background: var(--bs-red);" onclick="return confirm(&#39;Esta seguro de eliminar a este usuario?&#39;);">Eliminar</button></form>
+                        <a class="btn btn-primary btn-sm" role="button" style="margin: auto;" href="{{ url_for('edit', id_userEdit=userEdit.id, user=user) }}">Editar</a>
+                    </div>
+                    <div class="col" style="text-align: center;">
+                        <a class="btn btn-danger btn-sm" role="button" style="margin: auto;" href="{{ url_for('delete', id_userEdit=userEdit.id, user=user) }}" onclick="return confirm(&#39;Esta seguro de eliminar a este usuario?&#39;);">Eliminar</a>
                     </div>
                 </div>
             </div>
@@ -79,13 +81,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p>
-                                    <h6>Ingeniero</h6>
+                                    <h6>{{ userEdit.cargo }}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p>
-                                    <h6>Ingenieria</h6>
+                                    <h6>{{ userEdit.dependencia }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -93,13 +95,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p>
-                                    <h6>Termino Fijo</h6>
+                                    <h6>{{ userEdit.contrato }}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Rol:</p>
-                                    <h6>Empleado</h6>
+                                    <h6>{{ userEdit.rol }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -107,13 +109,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Fecha Termino Contrato:</p>
-                                    <h6>12/03/21</h6>
+                                    <h6>{{ userEdit.fecha_contrato }}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Fecha Ingreso:</p>
-                                    <h6>11/02/19</h6>
+                                    <h6>{{ userEdit.fecha_ingreso }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -162,6 +164,7 @@
             </div>
         </div>
     </div>
+    {% if userEdit.rol_id == 3 %}
     <div class="col">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
@@ -169,7 +172,7 @@
                     <div class="col">
                         <p class="text-primary m-0 fw-bold">Retroalimentacion</p>
                     </div>
-                    <div class="col" style="text-align: right;"><a class="btn btn-primary btn-sm" role="button" style="margin: auto;" href="retroalimentacion.html">Nueva retroalimentación</a></div>
+                    <div class="col" style="text-align: right;"><a class="btn btn-primary btn-sm" role="button" style="margin: auto;" href="{{ url_for('retroalimentacion', id_userEdit=userEdit.id, user=user) }}">Nueva retroalimentación</a></div>
                 </div>
             </div>
             <div class="card-body">
@@ -198,37 +201,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
-<div tabindex="-1" data-bs-scroll="true" class="offcanvas offcanvas-end" id="offcanvas-1" aria-labelledby="offcanvas-1">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Cambiar contraseña</h5><button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <p>Puede cambiar su contraseña del sistema aqui.</p>
-        <p>Su contraseña distingue mayúsculas de minúsculas y no puede estar en blanco.</p>
-        <form>
-            <div class="row" style="margin-top: 2rem;">
-                <div class="col">
-                    <div>
-                        <p>*Contraseña antigua</p><input type="password" class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 1rem;">
-                <div class="col">
-                    <div>
-                        <p>* Nueva contraseña</p><input type="password" class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 1rem;">
-                <div class="col">
-                    <div>
-                        <p>* Confirmar nueva contraseña</p><input type="password" class="form-control" />
-                    </div>
-                </div>
-            </div>
-        </form><button class="btn btn-primary" type="button" data-bs-dismiss="offcanvas" style="position: absolute;bottom: 3%;width: 90%;">Cambiar contraseña<br /></button>
-    </div>
-</div>
+
 {% endblock %}

@@ -1,11 +1,11 @@
 import os
 from flask import Flask, render_template, url_for, request, flash, redirect
 from forms import LogInForm, FilterForm
-from tablas import personas, rol, empleados, administrador, Superadministrador, listaTablaEmpleados, listaTablaAdministradores, Lista
+from tablas import personas, rol, empleados, administrador, Superadministrador, listaTablaEmpleados, listaTablaAdministradores, Lista, buscar_persona
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.config["SECRET_KEY"] = os.urandom(24)
 
 def sortByDate(elem):
     return datetime.strptime(elem[5], '%d/%m/%Y')
@@ -37,9 +37,11 @@ def table(user):
 
 
     longLista = len(lista)
-    categories = [(0," --- "),(2,"Administrador"),(3,"Empleado")]
+    
     if user==1:
-        form.rol.choices = categories
+        form.rol.choices = [(0," --- "),(2,"Administrador"),(3,"Empleado")]
+    if user==2:
+        form.rol.choices = [(3," Empleados ")]
 
     if form.validate() and lista:
         listaFiltrada = lista[:]
@@ -98,6 +100,7 @@ def table(user):
 
 @app.route("/profile/<int:user>", methods=["GET", "POST"])
 def profile(user):
+    
     return render_template('profile.html',user=user)
 
 @app.route("/edit/<int:id_userEdit>/<int:user>")
@@ -106,7 +109,15 @@ def edit(id_userEdit,user):
 
 @app.route("/view/<int:id_userEdit>/<int:user>")
 def view(id_userEdit,user):
-    return render_template('view.html',userEdit=id_userEdit, user=user)
+    try:
+        usuario = buscar_persona(id_userEdit)
+    except Exception as e:
+        flash("No existe un usuario con este id")
+        return(redirect(url_for('profile',user=user)))
+    
+    if usuario:
+        return render_template('view.html',userEdit=usuario, user=user)
+    
 
 @app.route("/newuser/<int:user>")
 def newUser(user):
@@ -120,6 +131,18 @@ def dashboard(user):
 def retroalimentacion(id_userEdit, user):
     return render_template('retroalimentacion.html', userEdit=id_userEdit, user=user)
 
-# # Modulo Principal
-# if __name__=='__main__':
-#     app.run(debug=True)
+@app.route("/nueva_contraseña/<int:id_userEdit>/<int:user>")
+def nueva_contrasena(id_userEdit, user):
+    return ("Enviar un correo con una nueva contraseña")
+
+@app.route("/delete/<int:id_userEdit>/<int:user>")
+def delete(id_userEdit, user):
+    return ("Se elimina a la persona")
+
+@app.route("/ForgotPassword")
+def ForgotPassword():
+    return render_template('ForgotPassword.html')
+
+# Modulo Principal
+if __name__=='__main__':
+    app.run(debug=True)
