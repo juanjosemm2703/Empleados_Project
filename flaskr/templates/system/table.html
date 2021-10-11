@@ -7,7 +7,7 @@
         <p class="text-primary m-0 fw-bold">Filtrar</p>
     </div>
     <div class="card-body">
-        <form  action="{{ url_for('table', user=user ) }}" method="GET">
+        <form  action="{{ url_for('system.table' ) }}" method="GET">
             <div class="row">
                 <div class="col">
                     <div class="form-group">
@@ -79,7 +79,7 @@
                         </select>&nbsp;</label></div>
             </div>
             <div class="col-md-6">
-                <div class="text-md-end dataTables_filter" id="dataTable_filter"><a href="{{ url_for('newUser',user=user) }}"><i class="fa fa-user-plus"></i><span>New User</span></a></div>
+                <div class="text-md-end dataTables_filter" id="dataTable_filter"><a href="{{ url_for('system.NewUser') }}"><i class="fa fa-user-plus"></i><span>New User</span></a></div>
             </div>
         </div>
         <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -96,27 +96,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for i in range(0,len) %}
-                    <tr>
-                        <td>{{ lista[i][0] +" "+ lista[i][1]}}</td>
-                        <td>{{ lista[i][2] }}</td>
-                        <td>{{ lista[i][3] }}</td>
-                        <td>{{ lista[i][4] }}</td>
-                        <td>{{ lista[i][5] }}</td>
-                        <td>
-                            <div class="row">
-                                <div class="col"><a href="{{ url_for('view', id_userEdit=lista[i][6], user=user) }}"><i class="fa fa-user-circle-o"></i></a></div>
-                                <div class="col"><a href="{{ url_for('edit', id_userEdit=lista[i][6], user=user) }}" style="text-align: center;"><i class="fa fa-edit"></i></a></div>
-                                <div class="col"><a href="" onclick="return confirm(&#39;Esta seguro que quiere remover a este usuario?&#39;)"><i class="fa fa-trash-o"></i></a></div>
-                                {% if lista[i][2] == 3 %}
-                                <div class="col"><a href="{{ url_for('retroalimentacion', id_userEdit=lista[i][6], user=user) }}"><i class="fa fa-list-alt"></i></a></div>
-                                {% else %}
-                                <div class="col"><i class="fa fa-list-alt"></i></div>
-                                {% endif %}
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
+<!--                    {% for i in range(0,len) %}-->
+<!--                    <tr>-->
+<!--                        <td>{{ lista[i][0] +" "+ lista[i][1]}}</td>-->
+<!--                        <td>{{ lista[i][2] }}</td>-->
+<!--                        <td>{{ lista[i][3] }}</td>-->
+<!--                        <td>{{ lista[i][4] }}</td>-->
+<!--                        <td>{{ lista[i][5] }}</td>-->
+<!--                        <td>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col"><a href="{{ url_for('view', id_userEdit=lista[i][6], user=user) }}"><i class="fa fa-user-circle-o"></i></a></div>-->
+<!--                                <div class="col"><a href="{{ url_for('edit', id_userEdit=lista[i][6], user=user) }}" style="text-align: center;"><i class="fa fa-edit"></i></a></div>-->
+<!--                                <div class="col"><a href="" onclick="return confirm(&#39;Esta seguro que quiere remover a este usuario?&#39;)"><i class="fa fa-trash-o"></i></a></div>-->
+<!--                                {% if lista[i][2] == 3 %}-->
+<!--                                <div class="col"><a href="{{ url_for('retroalimentacion', id_userEdit=lista[i][6], user=user) }}"><i class="fa fa-list-alt"></i></a></div>-->
+<!--                                {% else %}-->
+<!--                                <div class="col"><i class="fa fa-list-alt"></i></div>-->
+<!--                                {% endif %}-->
+<!--                            </div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    {% endfor %}-->
                 <tfoot>
                     <tr>
                         <td><strong>Nombre Completo</strong></td>
@@ -132,12 +132,12 @@
         <div class="row">
             <div class="col-md-6 align-self-center">
                 <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-                    {% if len == 0 %}
-                        Mostrando 0
-                    {% else %}
+<!--                    {% if len == 0 %}-->
+<!--                        Mostrando 0-->
+<!--                    {% else %}-->
 
-                        Mostrando 1 a 10 of {{ len }}
-                    {% endif %}
+<!--                        Mostrando 1 a 10 of {{ len }}-->
+<!--                    {% endif %}-->
                 </p>
             </div>
             <div class="col-md-6">

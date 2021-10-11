@@ -6,7 +6,7 @@
 
 <body class="bg-gradient-primary" style="min-height: 500px;height: 500px;">
     <section class="login-clean" style="height: 613px;background: url('/static/img/background.png') center / cover no-repeat, var(--bs-gray-200);color: var(--bs-gray-dark);">
-        <form method="POST" style="border-radius: 30px;margin-top: 10px;border: 0.5px solid var(--bs-gray-300);height: 568px;transform: translateY(-54px);max-width: 500px;" action="{{ url_for('login') }}">
+        <form method="POST" style="border-radius: 30px;margin-top: 10px;border: 0.5px solid var(--bs-gray-300);height: 568px;transform: translateY(-54px);max-width: 500px;" action="{{ url_for('auth.login') }}">
             <h2 class="visually-hidden">Login Form</h2>
             <div class="row" style="transform: translateY(-31px) scale(0.60);margin-top: -69px;">
                 <img src="/static/img/logo.png" style="transform: scale(0.70);"/>
@@ -31,7 +31,7 @@
             <div class="mb-3">
                 {{ form.submit(class="btn btn-primary d-block w-100 form-control", style="color: var(--bs-gray-100);background: var(--bs-blue);min-width: 120px;max-width: 24px;margin: 27px 0px 0px;margin-left: 70px;height: 39px;border-radius: 23px;padding: 8px;transform: translateX(81px);")}}
             </div>
-            <a class="forgot" href="{{ url_for('ForgotPassword') }}">¿Olvidó su contraseña?</a>
+            <a class="forgot" href="{{ url_for('auth.ForgotPassword') }}">¿Olvidó su contraseña?</a>
         </form>
     </section>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>

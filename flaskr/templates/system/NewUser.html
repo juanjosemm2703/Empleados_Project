@@ -1,13 +1,13 @@
 {% extends 'base_after.html' %}
-{% block title %} Edit {% endblock %}
+{% block title %} New User {% endblock %}
 {% block container %}
-<h3 class="text-dark mb-4">Editar Empleado: Angelica Ramos</h3>
+<h3 class="text-dark mb-4">Nuevo Usuario</h3>
 <form>
     <div class="row mb-3">
         <div class="col-lg-4">
             <div class="card mb-3">
-                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="../static/img/avatars/images.png" width="160" height="160">
-                    <div class="mb-3"><input class="form-control" type="file"></div><button class="btn btn-primary" type="submit">Editar</button>
+                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="../../static/img/avatars/man-avatar-profile-vector-21372076.jpeg" width="160" height="160">
+                    <div class="mb-3"><input class="form-control" type="file"></div><button class="btn btn-primary" type="submit">Agregar Usuario</button>
                 </div>
             </div>
         </div>
@@ -22,24 +22,24 @@
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Nombre:</p><input class="form-control" type="text" id="firstname" placeholder="Angelica ">
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Nombre:</p><input class="form-control" type="text" id="firstname">
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Apellido:</p><input class="form-control" type="text" id="lastname" placeholder="Ramos">
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Apellido:</p><input class="form-control" type="text" id="lastname">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Cedula:</p><input class="form-control" type="number" id="cedulaCiudadania" placeholder="0.000.000.000">
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Cedula:</p><input class="form-control" type="number" id="cedulaCiudadania">
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Correo Electronico:</p><input class="form-control" type="email" id="email" placeholder="angelicaramos@uninorte.edu.co">
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Correo Electronico:</p><input class="form-control" type="email" id="email">
                                     </div>
                                 </div>
                             </div>
@@ -53,19 +53,19 @@
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p><input class="form-control" type="text" id="cargo" placeholder="Ingeniero">
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p><input class="form-control" type="text" id="cargo">
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p><input class="form-control" type="text" id="dependencia" placeholder="Ingenieria">
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p><input class="form-control" type="text" id="dependencia">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p><input class="form-control" type="text" id="tipoContrato" placeholder="Termino Fijo">
+                                        <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p><input class="form-control" type="text" id="tipoContrato">
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
@@ -98,16 +98,16 @@
                         </div>
                         <div class="card-body">
                             <div>
-                                <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p><input class="form-control" type="text" placeholder="Calle 23 #86-52 Barrio el carmen">
+                                <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p><input class="form-control" type="text">
                                 <div class="row">
                                     <div class="col" style="text-align: left;margin: auto;">
                                         <div>
-                                            <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p><input class="form-control" type="tel" id="cellphone" placeholder="312587469">
+                                            <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p><input class="form-control" type="tel" id="cellphone">
                                         </div>
                                     </div>
                                     <div class="col" style="text-align: left;margin: auto;">
                                         <div>
-                                            <p class="text-secondary fw-bold" style="margin: auto;">Telefono fijo:</p><input class="form-control" type="tel" id="phoneNumber" placeholder="36985236">
+                                            <p class="text-secondary fw-bold" style="margin: auto;">Telefono fijo:</p><input class="form-control" type="tel" id="phoneNumber">
                                         </div>
                                     </div>
                                 </div>
@@ -117,41 +117,7 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card shadow mb-5">
-                <div class="card-header py-3">
-                    <div class="row">
-                        <div class="col">
-                            <p class="text-primary m-0 fw-bold">Retroalimentacion</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3" style="margin-bottom: 6px;">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
-                    </div>
-                    <div><textarea class="form-control" id="signature" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-top: 41px;padding-right: 0px;" placeholder="El empleado genera valor para la empresa ademas de conocimiento para su equipo. Fecha=25/04/21"></textarea></div>
-                    <div class="col">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
-                        <div class="row">
-                            <div class="col"><i class="fa fa-star" id="score-6" value="1"></i><i class="fa fa-star" id="score-7" value="2"></i><i class="fa fa-star" id="score-8" value="3"></i><i class="fa fa-star" id="score-9" value="4"></i><i class="fa fa-star" id="score-10" value="5"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3" style="margin-bottom: 6px;">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
-                    </div>
-                    <div><textarea class="form-control" id="signature-1" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-top: 41px;padding-right: 0px;" placeholder="El empleado no genera valor para la empresa ademas de enemistad para su equipo. Fecha=25/04/21"></textarea></div>
-                    <div class="col">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
-                        <div class="row">
-                            <div class="col"><i class="fa fa-star" id="score-1" value="1"></i><i class="fa fa-star-o" id="score-2" value="2"></i><i class="fa fa-star-o" id="score-3" value="3"></i><i class="fa fa-star-o" id="score-4" value="4"></i><i class="fa fa-star-o" id="score-5" value="5"></i></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </form>
 {% endblock %}
+
