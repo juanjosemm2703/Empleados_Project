@@ -4,7 +4,7 @@ from wtforms.validators import InputRequired, DataRequired, Length, ValidationEr
 
 
 class LogInForm(FlaskForm):
-    username = StringField('Nombre de Usuario', validators=[InputRequired("Input is required!"), DataRequired("Data is required!")])
+    correo = StringField('Correo Electronico', validators=[InputRequired("Input is required!"), DataRequired("Data is required!")])
     password = PasswordField('Contraseña', validators=[InputRequired("Input is required!"), DataRequired("Data is required!")])
     submit = SubmitField('Iniciar Sesion')
 

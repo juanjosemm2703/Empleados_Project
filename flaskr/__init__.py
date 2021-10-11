@@ -8,31 +8,26 @@ from flaskr.login import login_manager
 
 
 def create_app(test_config=None):
-    """Create and configure an instance of the Flask application."""
+    """Creando y configurando la aplicacion Flask."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        # a default secret that should be overridden by instance config
+        #clave secreta
         SECRET_KEY=os.urandom(24),
-        # store the database in the instance folder
-        DATABASE=os.path.join(app.instance_path, "Empleados.db"),
-    )
+        # base de datos en la carpeta instance
+        DATABASE=os.path.join(app.instance_path, "Empleados.sqlite"))
 
     if test_config is None:
-        # load the instance config, if it exists, when not testing
+        # carga la config.py si no hay configuracion de testeo
         app.config.from_pyfile("config.py", silent=True)
     else:
-        # load the test config if passed in
+        # carga la configuracion de testeo
         app.config.update(test_config)
 
-    # ensure the instance folder exists
+    # crea la carpeta unstance si no existe
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    @app.route("/hello")
-    def hello():
-        return "Hello, World!"
 
     #Configuracion SQLAlchemy
     app.config.from_mapping(
@@ -42,22 +37,19 @@ def create_app(test_config=None):
 
     sqla.init_app(app)
 
-    #configure Flask-Migrate
+    #configurando Flask-Migrate
     Migrate(app, sqla, render_as_batch=True)
 
-    #configure Flask-Login
-    # login_manager.init_app(app)
+    #configurando Flask-Login
+    login_manager.init_app(app)
 
-    # apply the blueprints to the app
+    # Aplicando los blueprint
     from flaskr import auth, system
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(system.bp)
 
-    # make url_for('index') == url_for('blog.index')
-    # in another app, you might define a separate main index here with
-    # app.route, while giving the blog blueprint a url_prefix, but for
-    # the tutorial the blog will be the main index
+    #redirigiendo la ruta "/" a auth.login
     app.add_url_rule("/", endpoint="auth.login")
 
     return app

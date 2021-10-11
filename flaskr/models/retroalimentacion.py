@@ -3,14 +3,14 @@ from sqlalchemy.orm import validates
 from flaskr.sqla import sqla
 
 
+
 class Retroalimentacion(sqla.Model):
-    id_retroalimentacion = id_rol = sqla.Column(sqla.Integer, primary_key=True, nullable=False)
-    id_empleado = sqla.Column(sqla.Integer, sqla.ForeignKey('usuario.id_usuario'), nullable=False)
-    id_administrador = sqla.Column(sqla.Text, sqla.ForeignKey('usuario.id_usuario'), nullable=False)
+    idRetroalimentacion = sqla.Column(sqla.Integer, primary_key=True, nullable=False)
+    idEmpleado = sqla.Column(sqla.Integer, sqla.ForeignKey('usuario.idUsuario'), nullable=False)
+    idAdministrador = sqla.Column(sqla.Text, sqla.ForeignKey('usuario.idUsuario'), nullable=False)
     comentario = sqla.Column(sqla.Text, nullable=False)
     puntaje = sqla.Column(sqla.Integer, nullable=False)
     fecha = sqla.Column(sqla.DateTime, nullable=False, default=datetime.utcnow)
-
 
     @validates('title', 'body')
     def validate_not_empty(self, key, value):
@@ -19,4 +19,4 @@ class Retroalimentacion(sqla.Model):
         return value
 
     def __repr__(self):
-        return self.id_retroalimentacion
+        return self.comentario

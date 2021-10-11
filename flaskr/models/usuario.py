@@ -1,13 +1,15 @@
 from uuid import uuid4
 
-from datetime import datetime
+from flask_login import UserMixin
 from sqlalchemy.orm import validates
-from flaskr.sqla import sqla
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from flaskr.sqla import sqla
+from flaskr.login import login_manager
 
-class Usuario(sqla.Model):
-    id_usuario = sqla.Column(sqla.Integer, primary_key=True, nullable=False)
+
+class Usuario(UserMixin, sqla.Model):
+    idUsuario = sqla.Column(sqla.Integer, primary_key=True, nullable=False)
     correo = sqla.Column(sqla.Text, nullable=False, unique=True)
     password = sqla.Column(sqla.Text, nullable=False)
     nombre = sqla.Column(sqla.Text, nullable=False)
@@ -21,16 +23,14 @@ class Usuario(sqla.Model):
     salario = sqla.Column(sqla.Float, nullable=False)
     estado = sqla.Column(sqla.Float, nullable=False, default=True)
     uuid = sqla.Column(sqla.String(64), nullable=False, default=lambda: str(uuid4()))
-    id_rol = sqla.Column(sqla.Integer, sqla.ForeignKey('rol.id_rol'), nullable=False)
-    rol = sqla.relationship('Rol', backref=sqla.backref('usuarios', lazy=True))
+    idRol = sqla.Column(sqla.Integer, sqla.ForeignKey('rol.idRol'), nullable=False)
+    nombreRol = sqla.relationship('Rol', backref=sqla.backref('usuarios', lazy=True))
 
-
-
-    @validates('correo', 'password', 'nombre', 'apellido', 'cedula', 'fecha_ingreso', 'fecha_contrato', 'tipo_contrato', 'cargo', 'dependencia', 'salario', 'id_rol')
+    @validates('correo', 'password', 'nombre', 'apellido', 'cedula', 'fecha_ingreso', 'fecha_contrato', 'tipo_contrato',
+               'cargo', 'dependencia', 'salario', 'Rol')
     def validate_not_empty(self, key, value):
         if not value:
             raise ValueError(f'{key.capitalize()} is required.')
-        return value
 
         if key == 'correo':
             self.validate_is_unique(key, value, error_message=f'{value} already registered')
@@ -49,7 +49,6 @@ class Usuario(sqla.Model):
                 error_message = f'{key} debe ser unico'
             raise ValueError(error_message)
 
-
     def correct_password(self, plaintext):
         return check_password_hash(self.password, plaintext)
 
@@ -57,5 +56,11 @@ class Usuario(sqla.Model):
         return self.uuid
 
     def __repr__(self):
-        return self.id_usuario
+        return self.nombre
+
+
+@login_manager.user_loader
+def load_user(user_uuid):
+    return Usuario.query.filter_by(uuid=user_uuid).first()
+
 

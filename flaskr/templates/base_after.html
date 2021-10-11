@@ -15,7 +15,7 @@
                     <li class="nav-item"><a class="nav-link {{'active' if active_page == 'Table' else ''}}" href="{{ url_for('system.table') }}"><i class="fas fa-table"></i><span>Tabla</span></a></li>
                     <li class="nav-item"><a class="nav-link {{'active' if active_page == 'Dashboard' else ''}}" href="{{ url_for('system.dashboard') }}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     {% endif %}
-                    <li class="nav-item"><a class="nav-link " href="{{ url_for('auth.login') }}"><i class="fa fa-sign-out"></i><span>Cerrar Sesion</span></a></li>
+                    <li class="nav-item"><a class="nav-link " href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out"></i><span>Cerrar Sesion</span></a></li>
                 </ul>
             </div>
         </nav>
