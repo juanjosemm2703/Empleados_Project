@@ -1,0 +1,23 @@
+{% if usuarios %}
+   {% for usuario in usuarios %}
+   <tr>
+       <td>{{ usuario.nombre +" "+ usuario.apellido}}</td>
+       <td>{{ usuario.nombreRol }}</td>
+       <td>{{ usuario.cargo }}</td>
+       <td>{{ usuario.dependencia }}</td>
+       <td>{{ usuario.fecha_ingreso.strftime('%Y-%m-%d') }}</td>
+       <td>
+           <div class="row">
+               <div class="col"><a href="{{ url_for('system.view') }}"><i class="fa fa-user-circle-o"></i></a></div>
+               <div class="col"><a href="{{ url_for('system.edit') }}" style="text-align: center;"><i class="fa fa-edit"></i></a></div>
+               <div class="col"><a href="{{ url_for('system.delete') }}" onclick="return confirm(&#39;Esta seguro que quiere remover a este usuario?&#39;)"><i class="fa fa-trash-o"></i></a></div>
+               {% if usuario.idRol == 3 %}
+               <div class="col"><a href="{{ url_for('system.retroalimentacion') }}"><i class="fa fa-list-alt"></i></a></div>
+               {% else %}
+               <div class="col"><i class="fa fa-list-alt"></i></div>
+               {% endif %}
+           </div>
+       </td>
+   </tr>
+   {% endfor %}
+{% endif %}

@@ -21,11 +21,21 @@ class Usuario(UserMixin, sqla.Model):
     cargo = sqla.Column(sqla.Text, nullable=False)
     dependencia = sqla.Column(sqla.Text, nullable=False)
     salario = sqla.Column(sqla.Float, nullable=False)
-    estado = sqla.Column(sqla.Float, nullable=False, default=True)
+    estado = sqla.Column(sqla.Boolean, nullable=False, default=1)
     uuid = sqla.Column(sqla.String(64), nullable=False, default=lambda: str(uuid4()))
     idRol = sqla.Column(sqla.Integer, sqla.ForeignKey('rol.idRol'), nullable=False)
     nombreRol = sqla.relationship('Rol', backref=sqla.backref('usuarios', lazy=True))
 
+    def diccionario(self):
+        diccionario = {
+        "nombre": str(self.nombre),
+        "apellido": str(self.apellido),
+        "nombreRol": str(self.nombreRol),
+        "cargo": str(self.cargo),
+        "dependencia": str((self.fecha_ingreso).strftime('%Y-%m-%d'))
+        }
+        return diccionario
+    
     @validates('correo', 'password', 'nombre', 'apellido', 'cedula', 'fecha_ingreso', 'fecha_contrato', 'tipo_contrato',
                'cargo', 'dependencia', 'salario', 'Rol')
     def validate_not_empty(self, key, value):
@@ -57,6 +67,8 @@ class Usuario(UserMixin, sqla.Model):
 
     def __repr__(self):
         return self.nombre
+    
+
 
 
 @login_manager.user_loader

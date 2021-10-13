@@ -7,7 +7,7 @@
         <p class="text-primary m-0 fw-bold">Filtrar</p>
     </div>
     <div class="card-body">
-        <form  action="{{ url_for('system.table' ) }}" method="GET">
+        <form  class="filter-form" action="{{ url_for('system.table' ) }}" method="GET">
             <div class="row">
                 <div class="col">
                     <div class="form-group">
@@ -42,9 +42,7 @@
                     </div>
                 </div>
                 <div class="col">
-
                     {{ form.submit(class="btn btn-primary form-control",style="margin-bottom: 0%;margin-top: 2em;") }}
-
                 </div>
             </div>
             <div class="row">
@@ -71,21 +69,27 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-6 text-nowrap">
-                <div id="dataTable_length" name="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
-                            <option value="10" selected="">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>&nbsp;</label></div>
+                <div id="dataTable_length" name="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                    <label class="form-label">Show&nbsp;
+                        <select class="d-inline-block form-select form-select-sm">
+                            {% for i in opciones%}
+                                {% if opciones[0] == i%}
+                                <option value="{{ i }}" selected="">{{ i }}</option>
+                                {% else %}
+                                <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>&nbsp;
+                    </label>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="text-md-end dataTables_filter" id="dataTable_filter"><a href="{{ url_for('system.NewUser') }}"><i class="fa fa-user-plus"></i><span>New User</span></a></div>
             </div>
         </div>
         <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-            <table class="table my-0" id="dataTable">
+            <table class="table my-0" id="data">
                 <thead>
-
                     <tr>
                         <th>Nombre Completo</th>
                         <th>Rol</th>
@@ -95,28 +99,34 @@
                         <th>Opcion</th>
                     </tr>
                 </thead>
-                <tbody>
-<!--                    {% for i in range(0,len) %}-->
-<!--                    <tr>-->
-<!--                        <td>{{ lista[i][0] +" "+ lista[i][1]}}</td>-->
-<!--                        <td>{{ lista[i][2] }}</td>-->
-<!--                        <td>{{ lista[i][3] }}</td>-->
-<!--                        <td>{{ lista[i][4] }}</td>-->
-<!--                        <td>{{ lista[i][5] }}</td>-->
-<!--                        <td>-->
-<!--                            <div class="row">-->
-<!--                                <div class="col"><a href="{{ url_for('view', id_userEdit=lista[i][6], user=user) }}"><i class="fa fa-user-circle-o"></i></a></div>-->
-<!--                                <div class="col"><a href="{{ url_for('edit', id_userEdit=lista[i][6], user=user) }}" style="text-align: center;"><i class="fa fa-edit"></i></a></div>-->
-<!--                                <div class="col"><a href="" onclick="return confirm(&#39;Esta seguro que quiere remover a este usuario?&#39;)"><i class="fa fa-trash-o"></i></a></div>-->
-<!--                                {% if lista[i][2] == 3 %}-->
-<!--                                <div class="col"><a href="{{ url_for('retroalimentacion', id_userEdit=lista[i][6], user=user) }}"><i class="fa fa-list-alt"></i></a></div>-->
-<!--                                {% else %}-->
-<!--                                <div class="col"><i class="fa fa-list-alt"></i></div>-->
-<!--                                {% endif %}-->
-<!--                            </div>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
+                <tbody class="filtro_form">
+                {% if usuarios|length >= opciones[0] %}
+                    {% set cantidad = opciones[0] %}
+                {% else %}  
+                    {% set cantidad = usuarios|length  %}
+                {% endif %}
+                   {% for i in range(cantidad) %}
+                   <tr>
+                       <td>{{ usuarios[i].nombre +" "+ usuarios[i].apellido}}</td>
+                       <td>{{ usuarios[i].nombreRol }}</td>
+                       <td>{{ usuarios[i].cargo }}</td>
+                       <td>{{ usuarios[i].dependencia }}</td>
+                       <td>{{ usuarios[i].fecha_ingreso.strftime('%Y-%m-%d') }}</td>
+                       <td>
+                           <div class="row">
+                               <div class="col"><a href="{{ url_for('system.view') }}"><i class="fa fa-user-circle-o"></i></a></div>
+                               <div class="col"><a href="{{ url_for('system.edit', usuario_id=usuarios[i].idRol) }}" style="text-align: center;"><i class="fa fa-edit"></i></a></div>
+                               <div class="col"><a href="{{ url_for('system.delete') }}" onclick="return confirm(&#39;Esta seguro que quiere remover a este usuario?&#39;)"><i class="fa fa-trash-o"></i></a></div>
+                               {% if usuarios[i].idRol == 3 %}
+                               <div class="col"><a href="{{ url_for('system.retroalimentacion') }}"><i class="fa fa-list-alt"></i></a></div>
+                               {% else %}
+                               <div class="col"><i class="fa fa-list-alt"></i></div>
+                               {% endif %}
+                           </div>
+                       </td>
+                   </tr>
+                   {% endfor %}
+                </tbody>
                 <tfoot>
                     <tr>
                         <td><strong>Nombre Completo</strong></td>
@@ -132,21 +142,20 @@
         <div class="row">
             <div class="col-md-6 align-self-center">
                 <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-<!--                    {% if len == 0 %}-->
-<!--                        Mostrando 0-->
-<!--                    {% else %}-->
-
-<!--                        Mostrando 1 a 10 of {{ len }}-->
-<!--                    {% endif %}-->
+                    {% if cantidad == 0%}
+                        Mostrando 0 usuarios
+                    {% else %}
+                        Mostrando 1 a {{ cantidad }} de {{ usuarios|length }}
+                    {% endif %}
                 </p>
             </div>
             <div class="col-md-6">
                 <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                     <ul class="pagination">
                         <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item numero_pagina active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item numero_pagina"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item numero_pagina"><a class="page-link" href="#">3</a></li>
                         <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
                     </ul>
                 </nav>
@@ -154,4 +163,7 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/table_update.js') }}"> </script>
 {% endblock %}

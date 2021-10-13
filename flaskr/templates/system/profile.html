@@ -2,7 +2,7 @@
 {% set active_page = 'Profile' %}
 {% block title %} Profile {% endblock %}
 {% block container %}
-<h3 class="text-dark mb-4">Perfil</h3>
+<h3 class="text-dark mb-4">{{ current_user.nombre }} {{ current_user.apellido }}</h3>
 <div class="row mb-3">
     <div class="col-lg-4">
         <div class="card mb-3">
@@ -16,13 +16,13 @@
             </div>
             <div class="card-body">
                 <h4 class="small fw-bold">Nombre Completo:</h4>
-                <h4 class="small">Juan Jose</h4>
+                <h4 class="small">{{ current_user.nombre }} {{ current_user.apellido }}</h4>
                 <h4 class="small fw-bold">Cédula de Ciudadania:</h4>
-                <h4 class="small">0.000.000.000</h4>
+                <h4 class="small">{{ current_user.cedula }}</h4>
                 <h4 class="small fw-bold">Correo Electronico:</h4>
-                <h4 class="small">jjmonsalve@uninorte.edu.co</h4>
+                <h4 class="small">{{ current_user.correo }}</h4>
                 <h4 class="small fw-bold">Id Usuario:</h4>
-                <h4 class="small">12345</h4>
+                <h4 class="small">{{ current_user.idUsuario }}</h4>
                 <h4 class="small fw-bold">Contraseña<br></h4>                
                 <a class="card-link" href="#offcanvas-1" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvas-1">
                     <h4 class="small">Cambiar contraseña</h4>
@@ -42,13 +42,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p>
-                                    <h6>Contador</h6>
+                                    <h6>{{ current_user.cargo }}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p>
-                                    <h6>Contable</h6>
+                                    <h6>{{ current_user.dependencia }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -56,13 +56,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p>
-                                    <h6>Termino Fijo</h6>
+                                    <h6>{{ current_user.tipo_contrato }}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Rol:</p>
-                                    <h6>Empleado</h6>
+                                    <h6>{{ current_user.nombreRol }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -70,13 +70,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Fecha Termino Contrato:</p>
-                                    <h6>12/03/21</h6>
+                                    <h6>{{ current_user.fecha_contrato.strftime('%Y-%m-%d') }}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Fecha Ingreso:</p>
-                                    <h6>11/02/19</h6>
+                                    <h6>{{ current_user.fecha_ingreso.strftime('%Y-%m-%d') }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -89,19 +89,19 @@
                     <div class="card-body">
                         <div>
                             <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p>
-                            <h6>Calle 100 # 25 - 52 Barrio Los Almendros&nbsp;</h6>
+                            <h6> </h6>
                         </div>
                         <div class="row">
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p>
-                                    <h6>3156258963</h6>
+                                    <h6> </h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Telefono fijo:</p>
-                                    <h6>3598645</h6>
+                                    <h6> </h6>
                                 </div>
                             </div>
                         </div>
@@ -117,44 +117,68 @@
                             <h6>Español</h6>
                         </div>
                         <div>
-                            <p class="text-secondary fw-bold" style="margin: auto;">Ajustes de Privacidad:</p>
-                            <h6>Solo los Administradores pueden ver este perfil&nbsp;</h6>
+                            {% if current_user.idRol == 3 %}
+                                <p class="text-secondary fw-bold" style="margin: auto;">Ajustes de Privacidad:</p>
+                                <h6>Administradores y Super Administradores pueden ver este perfil&nbsp;</h6>
+                            {% else %}
+                                <p class="text-secondary fw-bold" style="margin: auto;">Ajustes de Privacidad:</p>
+                                <h6>Solo los Super Administradores pueden ver este perfil&nbsp;</h6>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">No se puedo actualizar la contraseña</p>
+                        </div>
+                        <div class="card-body">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}" style="margin:auto; text-align: center;" role="alert">
+                                 {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>   
+                    {% endif %}
+                {% endwith %}   
             </div>
         </div>
     </div>
+
 </div>
-<div class="card shadow mb-5">
-    <div class="card-header py-3">
-        <p class="text-primary m-0 fw-bold">Retroalimentacion</p>
-    </div>
-    <div class="card-body">
-        <div class="mb-3" style="margin-bottom: 6px;">
-            <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
-        </div>
-        <div><textarea id="signature" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-top: 41px;padding-right: 0px;"></textarea></div>
-        <div class="col">
-            <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
-            <div class="row">
-                <div class="col"><i class="fa fa-star-o" id="score" value="1"></i><i class="fa fa-star-o" id="score" value="2"></i><i class="fa fa-star-o" id="score" value="3"></i><i class="fa fa-star-o" id="score" value="4"></i><i class="fa fa-star-o" id="score" value="5"></i></div>
+{% if current_user.idRol == 3 %}
+    {% for r in retroalimentaciones %}
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 fw-bold">Retroalimentacion</p>
             </div>
+                <div class="card-body">
+                    <div class="mb-3" style="margin-bottom: 6px;">
+                        <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
+                    </div>
+                    <div><textarea readonly id="signature" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;">{{ r.comentario }}. Creada: {{r.fecha.strftime('%Y-%m-%d')}}</textarea></div>
+                    <div class="col">
+                        <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
+                        <div class="row">
+                            <div class="col">
+                                {% for x in range(1,6) %}
+                                    {% if x <= r.puntaje %}
+                                        <i class="fa fa-star" id="score" value="{{ x }}"></i>
+                                    {% else %}
+                                        <i class="fa fa-star-o" id="score" value="{{ x }}"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
         </div>
-    </div>
-    <div class="card-body">
-        <div class="mb-3" style="margin-bottom: 6px;">
-            <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
-        </div>
-        <div><textarea id="signature-1" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-top: 41px;padding-right: 0px;"></textarea></div>
-        <div class="col">
-            <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
-            <div class="row">
-                <div class="col"><i class="fa fa-star-o" id="score-1" value="1"></i><i class="fa fa-star-o" id="score-2" value="2"></i><i class="fa fa-star-o" id="score-3" value="3"></i><i class="fa fa-star-o" id="score-4" value="4"></i><i class="fa fa-star-o" id="score-5" value="5"></i></div>
-            </div>
-        </div>
-    </div>
-</div>
+    {% endfor %}
+{% endif %}
+
 <div tabindex="-1" data-bs-scroll="true" class="offcanvas offcanvas-end" id="offcanvas-1" aria-labelledby="offcanvas-1">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">Cambiar contraseña</h5><button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -162,29 +186,35 @@
     <div class="offcanvas-body">
         <p>Puede cambiar su contraseña del sistema aqui.</p>
         <p>Su contraseña distingue mayúsculas de minúsculas y no puede estar en blanco.</p>
-        <form>
+        <form action="{{ url_for('system.profile' ) }}" method="POST">
+            {{form.hidden_tag() }}
             <div class="row" style="margin-top: 2rem;">
                 <div class="col">
                     <div>
-                        <p>*Contraseña antigua</p><input type="password" class="form-control" />
+                        {{ form.oldpassword.label(class="form-label") }}
+                        {{ form.oldpassword(class="form-control") }}
                     </div>
                 </div>
             </div>
             <div class="row" style="margin-top: 1rem;">
                 <div class="col">
                     <div>
-                        <p>* Nueva contraseña</p><input type="password" class="form-control" />
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
                     </div>
                 </div>
             </div>
             <div class="row" style="margin-top: 1rem;">
                 <div class="col">
                     <div>
-                        <p>* Confirmar nueva contraseña</p><input type="password" class="form-control" />
+                        {{ form.confirm.label(class="form-label") }}
+                        {{ form.confirm(class="form-control") }}
                     </div>
                 </div>
             </div>
-        </form><button class="btn btn-primary" type="button" data-bs-dismiss="offcanvas" style="position: absolute;bottom: 3%;width: 90%;">Cambiar contraseña<br /></button>
+                {{ form.submit(class="btn btn-primary form-control", style="position: absolute;bottom: 3%;width: 90%;border-radius: 23px;") }}
+<!--            <button class="btn btn-primary" type="submit" data-bs-dismiss="offcanvas" style="position: absolute;bottom: 3%;width: 90%;">Cambiar contraseña<br /></button>-->
+        </form>
     </div>
 </div>
 {% endblock %}

@@ -12,10 +12,12 @@ class FilterForm(FlaskForm):
     name = StringField("Nombre", validators=[Length(max=15)])
     rol = SelectField("Rol", coerce=int)
     cargo = StringField("Cargo", validators=[Length(max=15)])
-    date_admission = SelectField("Fecha Ingreso", coerce=int, choices=[(0, "---"), (1, "Max a Min"), (2, "Min a Max")])
+    date_admission = SelectField("Fecha Ingreso", coerce=int, choices=[(0, "---"), (1, "Antiguos a Recientes"), (2, "Recientes a Antiguos")])
     dependencia = StringField("Dependencia", validators=[Length(max=15)])
     submit = SubmitField("Filtro")
 
 class ChangePassword(FlaskForm):
-    password = PasswordField('New Password', [InputRequired(), EqualTo('confirm', message='Passwords must match')])
-    confirm  = PasswordField('Repeat Password')
+    oldpassword = PasswordField('* Contraseña antigua', validators=[InputRequired()])
+    password = PasswordField('* Nueva contraseña', validators=[InputRequired(), EqualTo('confirm', message='Contraseñas deben ser iguales')])
+    confirm  = PasswordField('* Confirmar nueva contraseña')
+    submit = SubmitField("Cambiar contraseña")

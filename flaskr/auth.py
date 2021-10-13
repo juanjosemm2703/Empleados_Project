@@ -14,31 +14,33 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     form = LogInForm()
-
     """Log in a registered user by adding the user id to the session."""
-    if form.is_submitted():
+    if form.validate_on_submit():
         correo = form.correo.data
         password = form.password.data
         error = None
         user = Usuario.query.filter_by(correo=correo).first()
 
-
         if user is None:
             error = "Correo electronico incorrecto."
 
-
-        elif not user.password == password:
+        elif not user.correct_password(password):
             error = "Contrasena incorrecta."
-
-
+        
+        elif not user.estado:
+            error = "Ingrese un correo y una clave valida"
+            
+        print(user.estado)
+        print(error)
+        
         if error is None:
             login_user(user)
             next = request.args.get('next')
             if next:
                 if not is_safe_url(next, {urlparse(request.base_url).netloc }):
                     return abort(400)
-            return redirect(next or url_for('system.view'))
-        flash(error)
+            return redirect(next or url_for('system.profile'))
+        flash(error, "danger")
 
     return render_template("auth/login.html", form=form)
 

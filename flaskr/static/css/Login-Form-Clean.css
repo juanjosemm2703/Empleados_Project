@@ -1,4 +1,4 @@
-.login-clean {
+/* .login-clean {
   background: #f1f7fc;
   padding: 80px 0;
 }
@@ -65,4 +65,252 @@
   opacity: 1;
   text-decoration: none;
 }
+ */
 
+/* ******************** Tamaño 1 ******************** */
+@media (max-width:1366px) {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    background-color: #204862
+  }
+  
+  .form-titulo-h1{
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    color: var(--bs-blue);
+    font-size: 100px;
+  }
+  
+  .form-titulo-h2{
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    color: var(--bs-blue);
+    font-size: 50px;
+    margin-bottom: 30px;
+  }
+  
+  .form-titulo-h3 {
+    color: var(--bs-blue);
+    margin-top: 24px;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 30px;
+  }
+  
+  .parrafo-1 {
+    color: var(--bs-gray-900);
+    font-size: 18px;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 70px;
+  }
+  
+  .login-form {
+    width: 95%;
+    max-width: 500px;
+    height: 95%;
+    max-height: 530px;
+    margin: auto;
+    background-color: white;
+    border-radius: 30px;
+  }
+  
+  .forgotPass-form {
+    width: 95%;
+    max-width: 500px;
+    margin-top: auto;
+    text-align: center;
+    color: var(--bs-gray-900);
+    font-size: 16px
+  }
+    
+  .cont-inputs{
+    padding: 20px 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+  
+  input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    border: none;
+    outline: none;
+  }
+  
+  .input-100{
+    width: 100%;
+    min-width: 250px;
+    border-bottom: 2px solid #dfe7f1;
+  }
+  
+  .input-150{
+    width: 100%;
+    max-width: 320px;
+    border-bottom: 2px solid #dfe7f1;
+  }
+  
+  .btn-enviar {
+    width: 50%;
+    min-width: 120px;
+    margin: auto;
+    margin-top: 15px;
+    background-color: var(--bs-blue);
+    border-radius: 20px;
+    color: white;
+  }
+  
+  .btn-restPass {
+    width: 40%;
+    min-width: 200px;
+    background-color: var(--bs-blue);
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    outline: none;
+  }
+  
+  .form-link {
+    width: 100%;
+    min-width: 200px;
+    margin: 20px;
+    text-align: center;
+    color: #6f7a85;
+    text-decoration: none;
+  }
+  /* Fin de Tamaño 1 */
+}
+
+/* ***************Tamaño 2*************** */
+@media (min-width: 1367px) {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    background-color: #204862
+  }
+  
+  .form-titulo-h1{
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    color: var(--bs-blue);
+    font-size: 100px;
+  }
+  
+  .form-titulo-h2{
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    color: var(--bs-blue);
+    font-size: 50px;
+    margin-bottom: 80px;
+  }
+  
+  .form-titulo-h3 {
+    color: var(--bs-blue);
+    margin-top: 24px;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 30px;
+  }
+  
+  .parrafo-1 {
+    color: var(--bs-gray-900);
+    font-size: 18px;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 70px;
+  }
+  
+  .login-form {
+    width: 95%;
+    max-width: 700px;
+    height: 95%;
+    max-height: 730px;
+    margin: auto;
+    background-color: white;
+    border-radius: 30px;
+  }
+  
+  .forgotPass-form {
+    width: 95%;
+    max-width: 700px;
+    margin-top: auto;
+    text-align: center;
+    color: var(--bs-gray-900);
+    font-size: 16px
+  }
+    
+  .cont-inputs{
+    padding: 20px 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+  
+  input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    border: none;
+    outline: none;
+  }
+  
+  .input-100{
+    width: 100%;
+    border-bottom: 2px solid #dfe7f1;
+  }
+  
+  .input-150{
+    width: 100%;
+    max-width: 320px;
+    border-bottom: 2px solid #dfe7f1;
+  }
+  
+  .btn-enviar {
+    width: 50%;
+    margin: auto;
+    background-color: var(--bs-blue);
+    border-radius: 20px;
+    color: white;
+  }
+  
+  .btn-restPass {
+    width: 40%;
+    min-width: 200px;
+    background-color: var(--bs-blue);
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    outline: none;
+  }
+  
+  .form-link {
+    width: 100%;
+    margin: 20px;
+    text-align: center;
+    color: #6f7a85;
+    text-decoration: none;
+  }
+  /* Fin de Tamaño 1 */
+}
