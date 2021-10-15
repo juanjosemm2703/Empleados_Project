@@ -1,13 +1,16 @@
 {% extends 'base_after.html' %}
 {% set active_page = 'Profile' %}
 {% block title %} Profile {% endblock %}
+{% from "_flash_messages.html" import flash_messages %}
 {% block container %}
 <h3 class="text-dark mb-4">{{ current_user.nombre }} {{ current_user.apellido }}</h3>
 <div class="row mb-3">
     <div class="col-lg-4">
         <div class="card mb-3">
             <div class="card-body text-center shadow">
-                <div class="mb-3"><img class="rounded-circle" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"></div>
+                <div class="mb-3">
+                    <img class="rounded-circle" width="160" height="200" src="{% if current_user.image %} {{ url_for('system.uploads', filename=current_user.image) }} {% else %} {{ url_for('static', filename='img/avatars/avatar.jpeg') }} {% endif %}">
+                </div>
             </div>
         </div>
         <div class="card shadow mb-4">
@@ -89,19 +92,19 @@
                     <div class="card-body">
                         <div>
                             <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p>
-                            <h6> </h6>
+                            <h6> {{ current_user.direccion }}</h6>
                         </div>
                         <div class="row">
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p>
-                                    <h6> </h6>
+                                    <h6> {{ current_user.celular }} </h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Telefono fijo:</p>
-                                    <h6> </h6>
+                                    <h6> {{ current_user.telefono }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -127,22 +130,8 @@
                         </div>
                     </div>
                 </div>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">No se puedo actualizar la contraseña</p>
-                        </div>
-                        <div class="card-body">
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}" style="margin:auto; text-align: center;" role="alert">
-                                 {{message}}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>   
-                    {% endif %}
-                {% endwith %}   
+                {% set flashes = get_flashed_messages(with_categories=true) %}
+                {{ flash_messages(flashes)}}
             </div>
         </div>
     </div>

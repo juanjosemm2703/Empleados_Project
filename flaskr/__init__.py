@@ -9,12 +9,26 @@ from flaskr.login import login_manager
 
 def create_app(test_config=None):
     """Creando y configurando la aplicacion Flask."""
+    """directorio base"""
+    basedir = os.path.abspath(os.path.dirname(__file__))
     app = Flask(__name__, instance_relative_config=True)
+    
     app.config.from_mapping(
         #clave secreta
         SECRET_KEY=os.urandom(24),
         # base de datos en la carpeta instance
-        DATABASE=os.path.join(app.instance_path, "Empleados.sqlite"))
+        DATABASE=os.path.join(app.instance_path, "Empleados.sqlite")
+    )
+    
+    #configuracion de imagenes
+    app.config.from_mapping(
+        #Solo archivos de imagen
+        ALLOWED_IMAGE_EXTENSIONS = ["jpeg", "jpg", "png"],
+        #tamano maximo
+        MAX_CONTENT_LENGTH = 16 * 1024 * 1024,
+        #carga de fotos
+        IMAGE_UPLOADS = os.path.join(basedir, "static/img")
+    )
 
     if test_config is None:
         # carga la config.py si no hay configuracion de testeo

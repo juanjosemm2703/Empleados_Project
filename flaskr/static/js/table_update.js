@@ -15,10 +15,14 @@ $(function(){
                 
             }else{
                 var resultado = (total_usuarios)/(parseInt(cantidad_mostrar))
+                console.log("resultado es:"+resultado)
                 if(parseInt(pagina)<=resultado){
                     var valor =((parseInt(pagina)-1)*parseInt(cantidad_mostrar))+1
-
                     $("#dataTable_info").text("Mostrando " + valor + " a "  + (valor + (usuarios_actuales-1)) +" de "+ total_usuarios)
+                }else{
+                    resultado = resultado%1
+                    valor =  resultado * (parseInt(cantidad_mostrar))
+                    $("#dataTable_info").text("Mostrando " + (total_usuarios-valor) + " a "  + total_usuarios +" de "+ total_usuarios)
                 }
             }
         }
@@ -39,6 +43,8 @@ $(function(){
         }).done(function(data){
             $(".filtro_form").empty().append($(data['tabla']).hide().fadeIn(700));
             actualizar_paginacion(data['usuarios_actuales'], data['total_usuarios'], pag, cant)
+            
+
         });
         
         

@@ -1,0 +1,11 @@
+{% macro flash_messages(flashes) %}
+{% with messages = flashes %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" style="position: absolute;max-width: 90%;font-size: auto; text-align: center;" role="alert">
+            {{message}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% endmacro %}

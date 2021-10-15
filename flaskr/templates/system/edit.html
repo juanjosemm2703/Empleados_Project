@@ -1,13 +1,22 @@
 {% extends 'base_after.html' %}
-{% block title %} Edit {% endblock %}
+{% block title %} Editar Usuario {% endblock %}
+{% set active_page = 'Editar Usuario' %}
+{% from "_error_messages.html" import error_messages %}
+{% from "_flash_messages.html" import flash_messages %}
 {% block container %}
-<h3 class="text-dark mb-4">Editar Empleado: Angelica Ramos</h3>
-<form>
+<h3 class="text-dark mb-4">Editar Empleado: {{usuario.nombre}} {{usuario.apellido}}</h3>
+<form action="{{ url_for('system.edit', usuario_id=usuario.idUsuario ) }}" method="POST" enctype="multipart/form-data">
     <div class="row mb-3">
         <div class="col-lg-4">
             <div class="card mb-3">
-                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="../../static/img/avatars/images.png" width="160" height="160">
-                    <div class="mb-3"><input class="form-control" type="file"></div><button class="btn btn-primary" type="submit">Editar</button>
+                <div class="card-body text-center shadow">
+                    <img id="user_img" class="rounded-circle mb-3 mt-4" src="{% if usuario.image %} {{ url_for('system.uploads', filename=usuario.image) }} {% else %} {{ url_for('static', filename='img/avatars/avatar.jpeg') }} {% endif %}" width="160" height="160">
+                    <div class="mb-3">
+                        {{form.hidden_tag() }}
+                        {{form.image.label}}
+                        {{form.image(class="form-control")}}
+                    </div>
+                        {{form.submit(class="btn btn-primary", value="Editar Usuario")}}
                 </div>
             </div>
         </div>
@@ -19,27 +28,42 @@
                             <h6 class="text-primary fw-bold m-0">Información Basica</h6>
                         </div>
                         <div class="card-body">
+                            {% set flashes = get_flashed_messages(with_categories=true) %}
+                            {{ flash_messages(flashes)}}
+                            {{ error_messages(form.errors) }}
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Nombre:</p><input class="form-control" type="text" id="firstname" placeholder="Angelica ">
+                                        {{ form.nombre.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.nombre(class="form-control") }}
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Apellido:</p><input class="form-control" type="text" id="lastname" placeholder="Ramos">
+                                        {{ form.apellido.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.apellido(class="form-control") }}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Cedula:</p><input class="form-control" type="number" id="cedulaCiudadania" placeholder="0.000.000.000">
+                                        {{ form.cedula.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.cedula(class="form-control") }}
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Correo Electronico:</p><input class="form-control" type="email" id="email" placeholder="angelicaramos@uninorte.edu.co">
+                                        {{ form.salario.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.salario(class="form-control") }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        {{ form.correo.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.correo(class="form-control") }}
                                     </div>
                                 </div>
                             </div>
@@ -53,40 +77,42 @@
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p><input class="form-control" type="text" id="cargo" placeholder="Ingeniero">
+                                        {{ form.cargo.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.cargo(class="form-control") }}
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p><input class="form-control" type="text" id="dependencia" placeholder="Ingenieria">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col" style="text-align: left;margin: auto;">
-                                    <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p><input class="form-control" type="text" id="tipoContrato" placeholder="Termino Fijo">
-                                    </div>
-                                </div>
-                                <div class="col" style="text-align: left;margin: auto;">
-                                    <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Rol:</p><select class="form-select" id="rol" name="rol">
-                                            <option value="0" selected="">Empleado</option>
-                                            <option value="1">Administrador</option>
-                                            <option value="2">Super Administrador</option>
-                                        </select>
+                                        {{ form.dependencia.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.dependencia(class="form-control") }}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Fecha Termino Contrato:</p><input class="form-control" id="contratoDate" type="date">
+                                        {{ form.tipo_contrato.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.tipo_contrato(class="form-control") }}
                                     </div>
                                 </div>
                                 <div class="col" style="text-align: left;margin: auto;">
                                     <div>
-                                        <p class="text-secondary fw-bold" style="margin: auto;">Fecha Ingreso:</p><input class="form-control" id="ingresoDate" type="date">
+                                        {{ form.idRol.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.idRol(class="form-select") }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        {{ form.fecha_contrato.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.fecha_contrato(class="form-control") }}
+                                    </div>
+                                </div>
+                                <div class="col" style="text-align: left;margin: auto;">
+                                    <div>
+                                        {{ form.fecha_ingreso.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                        {{ form.fecha_ingreso(class="form-control") }}
                                     </div>
                                 </div>
                             </div>
@@ -98,16 +124,19 @@
                         </div>
                         <div class="card-body">
                             <div>
-                                <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p><input class="form-control" type="text" placeholder="Calle 23 #86-52 Barrio el carmen">
+                                {{ form.direccion.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                {{ form.direccion(class="form-control") }}
                                 <div class="row">
                                     <div class="col" style="text-align: left;margin: auto;">
                                         <div>
-                                            <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p><input class="form-control" type="tel" id="cellphone" placeholder="312587469">
+                                            {{ form.celular.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                            {{ form.celular(class="form-control") }}
                                         </div>
                                     </div>
                                     <div class="col" style="text-align: left;margin: auto;">
                                         <div>
-                                            <p class="text-secondary fw-bold" style="margin: auto;">Telefono fijo:</p><input class="form-control" type="tel" id="phoneNumber" placeholder="36985236">
+                                            {{ form.telefono.label(class="text-secondary fw-bold", style="margin: auto;") }}
+                                            {{ form.telefono(class="form-control") }}
                                         </div>
                                     </div>
                                 </div>
@@ -154,4 +183,8 @@
         </div>
     </div>
 </form>
+{% endblock %}
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/_flash_fadeout.js') }}"> </script>
+<script src="{{ url_for('static', filename='js/preview_image.js') }}"> </script>
 {% endblock %}

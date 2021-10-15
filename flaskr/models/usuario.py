@@ -4,17 +4,18 @@ from flask_login import UserMixin
 from sqlalchemy.orm import validates
 from werkzeug.security import check_password_hash, generate_password_hash
 
+
 from flaskr.sqla import sqla
 from flaskr.login import login_manager
 
-
+    
 class Usuario(UserMixin, sqla.Model):
     idUsuario = sqla.Column(sqla.Integer, primary_key=True, nullable=False)
     correo = sqla.Column(sqla.Text, nullable=False, unique=True)
     password = sqla.Column(sqla.Text, nullable=False)
     nombre = sqla.Column(sqla.Text, nullable=False)
     apellido = sqla.Column(sqla.Text, nullable=False)
-    cedula = sqla.Column(sqla.Integer, nullable=False)
+    cedula = sqla.Column(sqla.Integer, nullable=False, unique=True)
     fecha_ingreso = sqla.Column(sqla.DateTime, nullable=False)
     fecha_contrato = sqla.Column(sqla.DateTime, nullable=False)
     tipo_contrato = sqla.Column(sqla.Text, nullable=False)
@@ -25,7 +26,11 @@ class Usuario(UserMixin, sqla.Model):
     uuid = sqla.Column(sqla.String(64), nullable=False, default=lambda: str(uuid4()))
     idRol = sqla.Column(sqla.Integer, sqla.ForeignKey('rol.idRol'), nullable=False)
     nombreRol = sqla.relationship('Rol', backref=sqla.backref('usuarios', lazy=True))
-
+    direccion = sqla.Column(sqla.String, nullable=False)
+    celular = sqla.Column(sqla.Integer, nullable=False)
+    telefono = sqla.Column(sqla.Integer, nullable=False)
+    image = sqla.Column(sqla.Text, nullable=False)
+    
     def diccionario(self):
         diccionario = {
         "nombre": str(self.nombre),
@@ -37,14 +42,17 @@ class Usuario(UserMixin, sqla.Model):
         return diccionario
     
     @validates('correo', 'password', 'nombre', 'apellido', 'cedula', 'fecha_ingreso', 'fecha_contrato', 'tipo_contrato',
-               'cargo', 'dependencia', 'salario', 'Rol')
+               'cargo', 'dependencia', 'salario', 'idRol', 'direccion', 'celular', 'telefono')
     def validate_not_empty(self, key, value):
         if not value:
-            raise ValueError(f'{key.capitalize()} is required.')
+            raise Exception(f'{key.capitalize()} is required.')
 
         if key == 'correo':
-            self.validate_is_unique(key, value, error_message=f'{value} already registered')
-
+            self.validate_is_unique(key, value, error_message=f'{value} ya registrado')
+            
+        if key == 'cedula':
+            self.validate_is_unique(key, value, error_message=f'{value} ya registrado')
+            
         if key == 'password':
             value = generate_password_hash(value)
 
@@ -68,8 +76,6 @@ class Usuario(UserMixin, sqla.Model):
     def __repr__(self):
         return self.nombre
     
-
-
 
 @login_manager.user_loader
 def load_user(user_uuid):

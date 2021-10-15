@@ -1,12 +1,16 @@
 {% extends 'base_after.html' %}
-{% block title %} View Profile {% endblock %}
+{% block title %} Vista Usuario {% endblock %}
+{% set active_page = 'Vista Usuario' %}
+{% from "_flash_messages.html" import flash_messages %}
 {% block container %}
-<h3 class="text-dark mb-4">Usuario :  </h3>
+<h3 class="text-dark mb-4">Usuario : {{usuario.nombre}} {{usuario.apellido}} </h3>
 <div class="row mb-3">
     <div class="col-lg-4">
         <div class="card mb-3">
-            <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="../../static/img/avatars/images.png" width="160" height="160">
-                <div class="mb-3"></div>
+            <div class="card-body text-center shadow">
+                <img class="rounded-circle mb-3 mt-4" src="{% if usuario.image %} {{ url_for('system.uploads', filename=usuario.image) }} {% else %} {{ url_for('static', filename='img/avatars/avatar.jpeg') }} {% endif %}" width="160" height="160">
+                <div class="mb-3">
+                </div>
             </div>
         </div>
         <div class="card shadow mb-4">
@@ -15,13 +19,13 @@
             </div>
             <div class="card-body">
                 <h4 class="small fw-bold">Nombre Completo: </h4>
-                <h4 class="small">   </h4>
+                <h4 class="small"> {{usuario.nombre}} {{usuario.apellido}}</h4>
                 <h4 class="small fw-bold">Cédula de Ciudadania: </h4>
-                <h4 class="small">  </h4>
+                <h4 class="small"> {{usuario.cedula}} </h4>
                 <h4 class="small fw-bold">Correo Electronico:</h4>
-                <h4 class="small">  </h4>
+                <h4 class="small"> {{usuario.correo }} </h4>
                 <h4 class="small fw-bold">Id Usuario:</h4>
-                <h4 class="small"> </h4>
+                <h4 class="small">{{usuario.idUsuario}} </hh4>
                 <h4 class="small fw-bold">Contraseña<br></h4>
                 <a class="card-link" href="{{url_for('system.nueva_contrasena')}}" target="_blank"onclick="return confirm(&#39;Se enviara una nueva contraseña al correo del usuario ?&#39;)">
                     <h4 class="small">Cambiar contraseña</h4>
@@ -30,46 +34,16 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col" style="text-align: center;">
-                        <a class="btn btn-primary btn-sm" role="button" style="margin: auto;" href="{{ url_for('system.edit') }}">Editar</a>
+                        <a class="btn btn-primary btn-sm" role="button" style="margin: auto;" href="{{ url_for('system.edit', usuario_id=usuario.idUsuario) }}">Editar</a>
                     </div>
                     <div class="col" style="text-align: center;">
-                        <a class="btn btn-danger btn-sm" role="button" style="margin: auto;" href="{{ url_for('system.delete') }}" onclick="return confirm(&#39;Esta seguro de eliminar a este usuario?&#39;);">Eliminar</a>
+                        <a class="btn btn-danger btn-sm" role="button" style="margin: auto;" href="{{ url_for('system.delete', usuario_id=usuario.idUsuario) }}" onclick="return confirm(&#39;Esta seguro de eliminar a este usuario?&#39;);">Eliminar</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-lg-8">
-        <div class="row mb-3 d-none">
-            <div class="col">
-                <div class="card textwhite bg-primary text-white shadow">
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col">
-                                <p class="m-0">Peformance</p>
-                                <p class="m-0"><strong>65.2%</strong></p>
-                            </div>
-                            <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
-                        </div>
-                        <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card textwhite bg-success text-white shadow">
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col">
-                                <p class="m-0">Peformance</p>
-                                <p class="m-0"><strong>65.2%</strong></p>
-                            </div>
-                            <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
-                        </div>
-                        <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col">
                 <div class="card shadow mb-3">
@@ -81,13 +55,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p>
-                                    <h6> </h6>
+                                    <h6> {{usuario.cargo}} </h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p>
-                                    <h6> </h6>
+                                    <h6> {{usuario.dependencia}} </h6>
                                 </div>
                             </div>
                         </div>
@@ -95,13 +69,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p>
-                                    <h6> </h6>
+                                    <h6> {{usuario.tipo_contrato}} </h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Rol:</p>
-                                    <h6> </h6>
+                                    <h6> {{usuario.idRol}} </h6>
                                 </div>
                             </div>
                         </div>
@@ -109,13 +83,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Fecha Termino Contrato:</p>
-                                    <h6> </h6>
+                                    <h6> {{usuario.fecha_contrato.strftime('%Y-%m-%d')}} </h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Fecha Ingreso:</p>
-                                    <h6> </h6>
+                                    <h6> {{usuario.fecha_ingreso.strftime('%Y-%m-%d')}} </h6>
                                 </div>
                             </div>
                         </div>
@@ -128,19 +102,19 @@
                     <div class="card-body">
                         <div>
                             <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p>
-                            <h6>Calle 23 # 86 - 52 Barrio El carmen</h6>
+                            <h6>{{usuario.direccion}}</h6>
                         </div>
                         <div class="row">
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p>
-                                    <h6>312587469</h6>
+                                    <h6>{{usuario.celular}}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Telefono fijo:</p>
-                                    <h6>36985236</h6>
+                                    <h6>{{usuario.telefono}}</h6>
                                 </div>
                             </div>
                         </div>
@@ -158,13 +132,24 @@
                     <h6>Español</h6>
                 </div>
                 <div>
-                    <p class="text-secondary fw-bold" style="margin: auto;">Ajustes de Privacidad:</p>
-                    <h6>Solo los Administradores pueden ver este perfil&nbsp;</h6>
+                    {% if usuario.idRol == 3 %}
+                        <p class="text-secondary fw-bold" style="margin: auto;">Ajustes de Privacidad:</p>
+                        <h6>Administradores y Super Administradores pueden ver este perfil&nbsp;</h6>
+                    {% else %}
+                        <p class="text-secondary fw-bold" style="margin: auto;">Ajustes de Privacidad:</p>
+                        <h6>Solo los Super Administradores pueden ver este perfil&nbsp;</h6>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-
+</div>
+<div class="row mb-3">
+    {% set flashes = get_flashed_messages(with_categories=true) %}
+    {{ flash_messages(flashes)}}
 </div>
 
+{% endblock %}
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/_flash_fadeout.js') }}"> </script>
 {% endblock %}

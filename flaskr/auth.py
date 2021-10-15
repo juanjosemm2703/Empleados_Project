@@ -22,16 +22,13 @@ def login():
         user = Usuario.query.filter_by(correo=correo).first()
 
         if user is None:
-            error = "Correo electronico incorrecto."
+            error = "Correo electrónico incorrecto."
 
         elif not user.correct_password(password):
             error = "Contrasena incorrecta."
         
         elif not user.estado:
-            error = "Ingrese un correo y una clave valida"
-            
-        print(user.estado)
-        print(error)
+            error = "Ingrese un correo y una clave válida"
         
         if error is None:
             login_user(user)
@@ -45,20 +42,20 @@ def login():
     return render_template("auth/login.html", form=form)
 
 
-
-
 @bp.route("/forgot_password", methods=("GET", "POST"))
 def ForgotPassword():
     """Olvido la contrasena"""
-    if request.method == "POST":
-        try:
+    try:
+        if request.method == "POST":
             print("Se envio correo")
-            return redirect(url_for('login'))
-        except ValueError as e:
+            flash("Te enviamos un correo con una contraseña temporal")
+            return redirect(url_for('auth.login'))
+    except ValueError as e:
             flash(str(e))
             return render_template('auth/ForgotPassword.html')
 
     return render_template("auth/ForgotPassword.html")
+
 
 
 @bp.route("/logout")
