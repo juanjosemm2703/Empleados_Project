@@ -19,6 +19,9 @@ from flaskr.sqla import sqla
 
 from wtforms import SelectField
 
+from datetime import datetime
+from sqlalchemy import extract
+
 
 bp = Blueprint("system", __name__, url_prefix="/system")
 
@@ -93,7 +96,24 @@ def retroalimentacion(usuario_id):
 @login_required
 @admin_required
 def dashboard():
-    return render_template('system/index.html')
+    usuarios= Usuario.query.filter_by(idRol=3).all()
+    CantEmpleado= len(usuarios)
+
+    admin= Usuario.query.filter_by(idRol=2).all()
+    CantAdm= len(admin)
+
+    Pun = Retroalimentacion.query.filter_by(idEmpleado=2).all()
+    sum=0
+    for i in Pun:
+        sum= sum + i.puntaje
+    Prom= sum/len(Pun)
+    
+    Retro = Retroalimentacion.query.filter(extract('month', Retroalimentacion.fecha) == datetime.today().month,
+                                extract('year', Retroalimentacion.fecha) == datetime.today().year,
+                                extract('day', Retroalimentacion.fecha) >= 1).all()
+                        
+    CantRetro= len(Retro)
+    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro)
 
 
 @bp.route("/table")
