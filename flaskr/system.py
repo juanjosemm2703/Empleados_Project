@@ -167,7 +167,7 @@ def table():
             diccionario ={ "tabla": tabla_html, "total_usuarios": total_usuarios, 'usuarios_actuales': len(usuarios)}
             return diccionario
     
-    opciones = usuarios_mostrar(3,6)    
+    opciones = usuarios_mostrar(5,2)    
     return render_template('system/table.html', form=form, usuarios=usuarios, opciones=opciones)
 
 
@@ -285,36 +285,33 @@ def NewUser():
     
     form.idRol.choices = categorias
     
-    if form.validate_on_submit() and form.image.validate(form, extra_validators=(FileRequired(),)):
-        
-        user = Usuario.query.filter(Usuario.correo==form.correo, Usuario.cedula==form.cedula).first()
+    if form.validate_on_submit() and form.image.validate(form, extra_validators=(FileRequired("Este campo no puede estar vacio"),)):
+        user = Usuario.query.filter((Usuario.correo==form.correo.data) | (Usuario.cedula==form.cedula.data)).first()
         if user:
             error = "Ya existe un usuario con estos datos"
         else:
-            try:
-                filename = save_image_upload(form.image)
-                nuevo_usuario = Usuario(
-                    correo = form.correo.data,
-                    password  = '123456',
-                    nombre = form.nombre.data,
-                    apellido = form.apellido.data,
-                    cedula = int(form.cedula.data),
-                    fecha_ingreso = form.fecha_ingreso.data,
-                    fecha_contrato = form.fecha_contrato.data,
-                    tipo_contrato = form.tipo_contrato.data,
-                    cargo = form.cargo.data,
-                    dependencia = form.dependencia.data,
-                    salario = float(form.salario.data),
-                    idRol = int(form.idRol.data),
-                    direccion = form.direccion.data,
-                    celular = int(form.celular.data),  
-                    telefono = int(form.telefono.data),
-                    image = filename,
-                )
-                sqla.session.add(nuevo_usuario)
-                sqla.session.commit()
-            except ValueError as e:
-                flash(e, "danger")
+            filename = save_image_upload(form.image)
+            nuevo_usuario = Usuario(
+                correo = form.correo.data,
+                password  = '123456',
+                nombre = form.nombre.data,
+                apellido = form.apellido.data,
+                cedula = int(form.cedula.data),
+                fecha_ingreso = form.fecha_ingreso.data,
+                fecha_contrato = form.fecha_contrato.data,
+                tipo_contrato = form.tipo_contrato.data,
+                cargo = form.cargo.data,
+                dependencia = form.dependencia.data,
+                salario = float(form.salario.data),
+                idRol = int(form.idRol.data),
+                direccion = form.direccion.data,
+                celular = int(form.celular.data),  
+                telefono = int(form.telefono.data),
+                image = filename,
+            )
+            sqla.session.add(nuevo_usuario)
+            sqla.session.commit()
+            flash("Usuario creado con exito","success")
             return redirect(url_for('system.table'))
         flash(error, "danger")
     return render_template('system/NewUser.html',form=form)

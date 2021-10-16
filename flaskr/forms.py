@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FileField, PasswordField, DecimalField, SubmitField, SelectField, IntegerField
+from wtforms import StringField, FileField, PasswordField, DecimalField, SubmitField, SelectField
 from wtforms.validators import InputRequired, DataRequired, Length, EqualTo, Email
-from wtforms.fields.html5 import EmailField, DateField
+from wtforms.fields.html5 import EmailField, DateField, TelField, IntegerField
 from flask_wtf.file import FileAllowed
 from markupsafe import Markup
 from wtforms.widgets import Input
@@ -53,14 +53,14 @@ class NewUserForm(FlaskForm):
     apellido = StringField("Apellido", validators=[InputRequired("Este campo no puede estar vacio")])
     cedula = IntegerField("Cedula", validators=[InputRequired("Este campo no puede estar vacio")])
     fecha_ingreso = DateField("Fecha Ingreso", validators=[InputRequired("Este campo no puede estar vacio")])
-    fecha_contrato = DateField("Fecha Contrato", validators=[InputRequired("Este campo no puede estar vacio")])
-    tipo_contrato = StringField("Tipo de Contrato", validators=[InputRequired("Este campo no puede estar vacio")])
+    fecha_contrato = DateField("Fecha de finalizacion del contrato", validators=[InputRequired("Este campo no puede estar vacio")])
+    tipo_contrato = StringField("Tipo de contrato", validators=[InputRequired("Este campo no puede estar vacio")])
     cargo = StringField("Cargo", validators=[InputRequired("Este campo no puede estar vacio")])
     dependencia = StringField("Dependencia", validators=[InputRequired("Este campo no puede estar vacio")])
     salario = SalarioField("Salario", validators=[InputRequired("Este campo no puedede estar vacio")])
     idRol = SelectField("Rol", coerce=int, validators=[InputRequired("Este campo no puede estar vacio"), DataRequired("Este campo no puede estar vacio")])
     direccion = StringField("Direccion", validators=[InputRequired("Este campo no puede estar vacio")])
-    celular = IntegerField("Celular", validators=[InputRequired("Este campo no puede estar vacio")])
-    telefono = IntegerField("Telefono", validators=[InputRequired("Este campo no puede estar vacio")])
+    celular = TelField("Celular", validators=[InputRequired("Este campo no puede estar vacio")])
+    telefono = TelField("Telefono", validators=[InputRequired("Este campo no puede estar vacio")])
     image = FileField("Imagen", validators=[FileAllowed(["jpeg", "jpg", "png"], "Solo imagenes")])
     submit = SubmitField("Agregar usuario")
