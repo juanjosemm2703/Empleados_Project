@@ -1,15 +1,15 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, session, url_for
-
 from flask_login import login_user, current_user
 from urllib.parse import urlparse
 from is_safe_url import is_safe_url
+from flask_mail import Mail, Message
+from flaskr.mail import mail
 
 from flaskr.forms import LogInForm
 
 from flaskr.models import Usuario
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
-
 
 @bp.route("/login", methods=("GET", "POST"))
 def login():
@@ -47,6 +47,9 @@ def ForgotPassword():
     """Olvido la contrasena"""
     try:
         if request.method == "POST":
+            msg = Message('Hola', sender='empleados.project@gmail.com', recipients=['hernandezrodriguez@uninorte.edu.co'])
+            msg.html = render_template('email.html')
+            mail.send(msg)
             print("Se envio correo")
             flash("Te enviamos un correo con una contraseña temporal")
             return redirect(url_for('auth.login'))
@@ -62,4 +65,3 @@ def ForgotPassword():
 def logout():
     session.clear()
     return redirect(url_for("auth.login"))
-

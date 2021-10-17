@@ -1,10 +1,11 @@
 import os
 
 from flask import Flask
+from flask_mail import Mail
 from flaskr.sqla import sqla
 from flask_migrate import Migrate
 from flaskr.login import login_manager
-
+from flaskr.mail import mail
 
 
 def create_app(test_config=None):
@@ -65,5 +66,15 @@ def create_app(test_config=None):
 
     #redirigiendo la ruta "/" a auth.login
     app.add_url_rule("/", endpoint="auth.login")
+    
+    # Servidor de correo:
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USE_SSL'] = True
+    # app.config['MAIL_USERNAME'] = 'empleados.project@gmail.com'
+    # app.config['MAIL_PASSWORD'] = 'Prueba.1234'
+    app.config.from_pyfile('mail.cfg')
+    
+    mail.init_app(app)
 
     return app
