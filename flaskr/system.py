@@ -2,10 +2,10 @@ import functools
 from flask import jsonify
 import json
 import os, datetime
-from flask import abort, Blueprint, send_from_directory, flash, redirect, render_template, request, session, url_for, current_app
+from flask import  Blueprint, send_from_directory, flash, redirect, render_template, request,  url_for, current_app
 from flask import flash
 from secrets import token_hex
-from werkzeug.datastructures import CombinedMultiDict
+from datetime import datetime as dt
 
 from werkzeug.utils import secure_filename 
 from flaskr.models import Usuario, Retroalimentacion, Rol
@@ -17,7 +17,7 @@ from flask_wtf.file import FileRequired
 from flaskr.forms import ChangePassword
 from flaskr.sqla import sqla
 
-from wtforms import SelectField
+from sqlalchemy import extract
 
 
 bp = Blueprint("system", __name__, url_prefix="/system")
@@ -135,6 +135,7 @@ def retroalimentacion(usuario_id):
                 category = "success"
                 
             except Exception as e:
+                print(e)
                 mensaje = "No se pudo generar la retroalimentacion"
                 category = "danger"
                 
@@ -162,7 +163,24 @@ def retroalimentacion(usuario_id):
 @login_required
 @admin_required
 def dashboard():
-    return render_template('system/index.html')
+    usuarios= Usuario.query.filter_by(idRol=3).all()
+    CantEmpleado= len(usuarios)
+
+    admin= Usuario.query.filter_by(idRol=2).all()
+    CantAdm= len(admin)
+
+    Pun = Retroalimentacion.query.filter_by(idEmpleado=2).all()
+    sum=0
+    for i in Pun:
+        sum= sum + i.puntaje
+    Prom= sum/len(Pun)
+    
+    Retro = Retroalimentacion.query.filter(extract('month', Retroalimentacion.fecha) == dt.today().month,
+                                extract('year', Retroalimentacion.fecha) == dt.today().year,
+                                extract('day', Retroalimentacion.fecha) >= 1).all()
+                        
+    CantRetro= len(Retro)
+    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro)
 
 
 @bp.route("/table")
