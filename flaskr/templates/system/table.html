@@ -1,9 +1,11 @@
 {% extends 'base_after.html' %}
 {% set active_page = 'Table' %}
-{% from "_error_messages.html" import error_messages %}
+{% from "_flash_messages.html" import flash_messages %}
 {% block title %} Table {% endblock %}
 {% block container %}
-<div class="card">
+{% set flashes = get_flashed_messages(with_categories=true) %}
+{{ flash_messages(flashes)}}
+<div class="card"> 
     <div class="card-header py-3">
         <p class="text-primary m-0 fw-bold">Filtrar</p>
     </div>
@@ -46,21 +48,7 @@
                     {{ form.submit(class="btn btn-primary form-control",style="margin-bottom: 0%;margin-top: 2em;") }}
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}" role="alert" style="margin-top: 1rem">
-                                {{message}}
-                            </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                </div>
-            </div>
         </form>
-
     </div>
 </div>
 <div class="card shadow">
@@ -166,7 +154,7 @@
             <div class="col-md-6">
                 <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                     <ul class="pagination">
-                        <li class="page-item disabled" id="Previous">
+                        <li class="page-item cambio_pagina disabled" id="Previous">
                             <a class="page-link" href="#"  aria-label="Previous">
                                 <span aria-hidden="true">«</span>
                             </a>
@@ -174,7 +162,7 @@
                         <li class="page-item numero_pagina active"><a class="page-link" href="#">1</a></li>
                         <li class="page-item numero_pagina"><a class="page-link" href="#">2</a></li>
                         <li class="page-item numero_pagina"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item" id="Next">
+                        <li class="page-item cambio_pagina" id="Next">
                             <a class="page-link" href="#"  aria-label="Next">
                                 <span aria-hidden="true">»</span>
                             </a>

@@ -9,7 +9,7 @@ from werkzeug.datastructures import CombinedMultiDict
 
 from werkzeug.utils import secure_filename 
 from flaskr.models import Usuario, Retroalimentacion, Rol
-from flaskr.forms import FilterForm, NewUserForm
+from flaskr.forms import FilterForm, NewUserForm, CrearRetroalimentacion
 from flask_login import login_required
 from flask_login import current_user
 from flask_wtf.file import FileRequired
@@ -52,18 +52,24 @@ def view(usuario_id):
     if not usuario:
         error = "El usuario con este id no se cnuentra en la base de datos"
     if error is None:
+        if usuario.idRol == 3:
+            retroalimentaciones = Retroalimentacion.query.filter_by(idEmpleado=usuario.idUsuario).order_by(Retroalimentacion.fecha.desc()).limit(5).all()
+            return render_template('system/view.html',usuario=usuario, retroalimentaciones=retroalimentaciones)    
         return render_template('system/view.html',usuario=usuario)
     flash(error, "danger")
     return redirect(url_for("system.table"))
     
-
 
 @bp.route("/delete/<int:usuario_id>")
 @login_required
 @admin_required
 def delete(usuario_id):
     error = None
-    usuario = Usuario.query.filter_by(idUsuario=usuario_id, estado=1).first()
+    usuario = ""
+    if current_user.idRol == 2:
+        usuario = Usuario.query.filter_by(idUsuario=usuario_id, estado=1, idRol=3).first()
+    elif current_user.idRol == 1:    
+        usuario = Usuario.query.filter(Usuario.idUsuario == usuario_id, Usuario.estado == 1, (Usuario.idRol == 3) | (Usuario.idRol == 2)).first()
 
     if not usuario:
         error = "El usuario no se encuentra en la base de datos"
@@ -82,12 +88,75 @@ def nueva_contrasena():
     return "Enviar un correo con una nueva contraseña"
 
 
-@bp.route("/retroalimentacion/<int:usuario_id>")
+@bp.route("/retroalimentacion/<int:usuario_id>", methods=("GET", "POST"))
 @login_required
 @admin_required
 def retroalimentacion(usuario_id):
-    return render_template('system/retroalimentacion.html')
+    error = None
+    usuario = Usuario.query.filter_by(idUsuario=usuario_id, estado=1, idRol=3).first()
 
+    if not usuario:
+        error = "El usuario con este id no se encuentra en la base de datos o no se le puede genera una retroalimentacion"
+        
+    if error is None:
+        form = CrearRetroalimentacion()
+        retroalimentaciones = sqla.session.query(Retroalimentacion).join(Usuario,Usuario.idUsuario==Retroalimentacion.idEmpleado).filter_by(idUsuario=usuario_id).order_by(Retroalimentacion.fecha.desc()).limit(5).all()
+        
+        categorias = [(0, "---")]
+        for r in retroalimentaciones:
+          choice = (r.idRetroalimentacion, r.fecha.strftime("%Y-%m-%d"))
+          categorias.append(choice) 
+           
+        form.retroalimentaciones.choices = categorias
+            
+        try:
+            is_ajax = int(request.args["ajax"])
+        except:
+            is_ajax = 0
+            
+
+        if form.validate_on_submit():
+            try:
+                if int(form.retroalimentaciones.data) > 0:
+                    nueva_retroalimentacion = Retroalimentacion.query.filter_by(idRetroalimentacion=int(form.retroalimentaciones.data)).first()
+                    mensaje = "La retroalimentacion ha sido editada con exito"
+                    
+                elif int(form.retroalimentaciones.data) == 0:
+                    nueva_retroalimentacion = Retroalimentacion()
+                    mensaje = "La retroalimentacion ha sido creada con exito"
+                nueva_retroalimentacion.idEmpleado = usuario.idUsuario
+                nueva_retroalimentacion.idAdministrador = current_user.idUsuario
+                nueva_retroalimentacion.comentario = form.retroalimentacion.data
+                nueva_retroalimentacion.puntaje = form.puntaje.data
+                nueva_retroalimentacion.fecha = datetime.datetime.utcnow()
+                
+                sqla.session.add(nueva_retroalimentacion)
+                sqla.session.commit()
+                category = "success"
+                
+            except Exception as e:
+                mensaje = "No se pudo generar la retroalimentacion"
+                category = "danger"
+                
+            flash(mensaje, category)
+            return redirect(url_for('system.view', usuario_id=usuario_id))
+        
+        if is_ajax:
+           
+            retroalimentacion = Retroalimentacion.query.filter_by(idRetroalimentacion=int(request.args["id"]),idEmpleado=usuario_id).first()
+            retroalimentacion = Retroalimentacion.query.filter_by(idRetroalimentacion=int(request.args["id"]),idEmpleado=usuario_id).first()
+            if not retroalimentacion:
+                retroalimentacion = { "comentario": "", "puntaje": "0"}
+                retroalimentacion = json.dumps(retroalimentacion)
+                return retroalimentacion
+            else:
+                retroalimentacion = { "comentario": retroalimentacion.comentario, "puntaje": retroalimentacion.puntaje}
+                retroalimentacion = json.dumps(retroalimentacion)
+                return retroalimentacion
+        
+        return render_template('system/retroalimentacion.html', form=form, usuario=usuario, retroalimentaciones=retroalimentaciones)
+    flash(error, "danger")
+    return redirect(url_for('system.table'))   
 
 @bp.route("/dashboard")
 @login_required
@@ -167,7 +236,7 @@ def table():
             diccionario ={ "tabla": tabla_html, "total_usuarios": total_usuarios, 'usuarios_actuales': len(usuarios)}
             return diccionario
     
-    opciones = usuarios_mostrar(5,2)    
+    opciones = usuarios_mostrar(10,1)    
     return render_template('system/table.html', form=form, usuarios=usuarios, opciones=opciones)
 
 
@@ -204,8 +273,8 @@ def profile():
 @login_required
 @admin_required
 def edit(usuario_id):
-    usuario = Usuario.query.filter_by(idUsuario=usuario_id, estado=1).first()
     error = None
+    usuario = Usuario.query.filter_by(idUsuario=usuario_id, estado=1).first()
     if not usuario:
         error = "El usuario con este id no se encuentra en la base de datos"
     if error is None:
@@ -218,7 +287,7 @@ def edit(usuario_id):
             categorias.append(rol_choice)
 
         form.idRol.choices = categorias
-        
+
         if form.validate_on_submit():
             
             filename = usuario.image
@@ -263,8 +332,7 @@ def edit(usuario_id):
         form.idRol.data = usuario.idRol
         form.direccion.data = usuario.direccion
         form.celular.data = usuario.celular
-        form.telefono.data = usuario.telefono
-            
+        form.telefono.data = usuario.telefono  
         return render_template('system/edit.html',usuario=usuario, form=form)
     
     flash(error, "danger")

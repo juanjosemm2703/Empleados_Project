@@ -15,18 +15,29 @@ $(function(){
                 }else{
                     resultado = resultado%1
                     valor =  resultado * (parseInt(cantidad_mostrar))
-                    $("#dataTable_info").text("Mostrando " + (total_usuarios-valor) + " a "  + total_usuarios +" de "+ total_usuarios)
+                    $("#dataTable_info").text("Mostrando " + ((total_usuarios+1)-valor) + " a "  + total_usuarios +" de "+ total_usuarios)
                 }
             }
         }
     }
 
     function cambio_numeracion(pag, total_usuarios,cantidad_mostrar){
+        console.log(pag)
+        console.log(total_usuarios)
+        console.log(cantidad_mostrar)
         var resultado = Math.ceil((total_usuarios)/(parseInt(cantidad_mostrar)))
+        console.log(resultado)
+
         $(".pagination > li").each(function(){
             $(this).removeClass("disabled")
+            console.log($(this).text())
             if($(this).text()==resultado){ 
-                $(this).nextAll("li").addClass("disabled")
+                $(this).nextUntil(".cambio_pagina").addClass("disabled")
+                if($(this).text()==parseInt(pag)){
+                    $(this).nextAll("li").addClass("disabled")
+                    return false;
+                }
+                $("#Next").removeClass("disabled")
                 return false;
             }
         })
@@ -61,14 +72,19 @@ $(function(){
             url: "/system/table",
             data: form.serialize() + "&cantidad=" + cant + "&pagina=" + pag +"&ajax=1"
         }).done(function(data){
-            console.log(data["usuarios_actuales"]);
-            console.log(parseInt(pag))
 
             if( parseInt(pag) != 1 && data['usuarios_actuales']==0){
+                const value = parseInt(pag)/3;
+                cambioPagina = 1;
                 $(".pagination > .numero_pagina").each(function(){
                     if($(this).text()==pag){
-                        $(this).removeClass("active");
+                        $(this).removeClass("active");  
                     }
+                    if(value>1){
+                        $("a",this).text(cambioPagina);
+                        cambioPagina++;
+                    }
+
                 });
                 cambio_tabla(pag=1);
 
@@ -92,6 +108,8 @@ $(function(){
     })
 
     $(".pagination > .numero_pagina").on('click','a', function(event){ 
+        event.preventDefault();
+        
         $(".pagination > .numero_pagina").each(function(){
             if($(this).hasClass("active")){
                 $(this).removeClass("active");
@@ -100,7 +118,61 @@ $(function(){
         $(this).closest(".numero_pagina").addClass("active");
         cambio_tabla();
     })
+
+    $(".pagination > .cambio_pagina").on('click','a', function(event){ 
+        event.preventDefault();
         
+        if($(this).closest("li").attr("id") == "Previous"){
+            
+            $(".pagination > .numero_pagina").each(function(){
+                
+                if($(this).hasClass("active")){
+                    var numeroPagina=parseInt($(this).text())
+                    var value = numeroPagina/3
+                    value = (value%1).toFixed(1)
+                    if(value==0.3){ 
+                        var cont=1;
+                        $(".pagination > .numero_pagina").each(function(){
+                            cambioPagina = parseInt($(this).text())-3
+                            $("a",this).text(cambioPagina)
+                            if(cont==3){
+                                $(this).addClass("active")
+                            }
+                            cont++;
+                        })
+                    }
+                    $(this).removeClass("active");
+                    $(this).prev(".numero_pagina").addClass("active");
+                    return false;  
+                }
+            });
+        
+        }
+        else if($(this).closest("li").attr("id") == "Next"){
+            $(".pagination > .numero_pagina").each(function(){
+                if($(this).hasClass("active")){
+                    var numeroPagina=parseInt($(this).text())
+                    var value = numeroPagina/3
+                    value = value%1
+                    if(value==0){ 
+                        var cont=1;
+                        $(".pagination > .numero_pagina").each(function(){
+                            cambioPagina = parseInt($(this).text())+3
+                            $("a",this).text(cambioPagina)
+                            if(cont==1){
+                                $(this).addClass("active")
+                            }
+                            cont++;
+                        })
+                    }
+                    $(this).removeClass("active");
+                    $(this).next(".numero_pagina").addClass("active");
+                    return false;    
+                }
+            });
+        }
+
+        cambio_tabla();
+    })            
     
 });
-

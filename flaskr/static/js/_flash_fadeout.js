@@ -1,1 +1,1 @@
-$(".alert").fadeOut(2500);
+$(".flash-message").fadeOut(2500);

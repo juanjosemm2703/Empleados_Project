@@ -1,0 +1,36 @@
+{% macro retroalimentacion(retroalimentaciones, editable) %}
+{% for r in retroalimentaciones %}
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 fw-bold">Retroalimentacion</p>
+            </div>
+                <div class="card-body">
+                    <div class="mb-3" style="margin-bottom: 6px;">
+                        <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
+                    </div>
+                    <div>
+                        <textarea readonly id="signature" style="width: 100%;height: 100%;">{{ r.comentario }}</textarea>
+                    </div>
+                    <div class="col">
+                        <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
+                        <div class="row">
+                            <div class="col" >
+                                <div class="stars disabled">
+                                    {% for x in range(1,6) %}
+                                        {% if x <= r.puntaje %}
+                                            <i class="fa fa-star active" id="score"></i>
+                                        {% else %}
+                                            <i class="fa fa-star" id="score"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col" style="text-align: right;margin: auto;">
+                                Creada: {{r.fecha.strftime('%Y-%m-%d')}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+{% endfor %}
+{% endmacro %}    

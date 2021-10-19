@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FileField, PasswordField, DecimalField, SubmitField, SelectField
+from wtforms import StringField, FileField, PasswordField, DecimalField, SubmitField, SelectField, HiddenField
+from wtforms.fields.simple import TextAreaField
 from wtforms.validators import InputRequired, DataRequired, Length, EqualTo, Email
 from wtforms.fields.html5 import EmailField, DateField, TelField, IntegerField
 from flask_wtf.file import FileAllowed
@@ -48,7 +49,7 @@ class ChangePassword(FlaskForm):
     submit = SubmitField("Cambiar contraseña")
     
 class NewUserForm(FlaskForm):
-    correo = EmailField("Email",  validators=[InputRequired("Please enter your email address."), Email("Please enter your email address.")])
+    correo = EmailField("Email",  validators=[InputRequired("Por favor ingrese su correo electronico"), Email("Por favor ingrese su correo electronico")])
     nombre = StringField("Nombre", validators=[InputRequired("Este campo no puede estar vacio")])
     apellido = StringField("Apellido", validators=[InputRequired("Este campo no puede estar vacio")])
     cedula = IntegerField("Cedula", validators=[InputRequired("Este campo no puede estar vacio")])
@@ -64,3 +65,9 @@ class NewUserForm(FlaskForm):
     telefono = TelField("Telefono", validators=[InputRequired("Este campo no puede estar vacio")])
     image = FileField("Imagen", validators=[FileAllowed(["jpeg", "jpg", "png"], "Solo imagenes")])
     submit = SubmitField("Agregar usuario")
+    
+class CrearRetroalimentacion(FlaskForm):
+    retroalimentacion = TextAreaField("Comentarios:", validators=[InputRequired("Este campo no puede estar vacio")] )
+    puntaje = HiddenField("Puntaje:",validators=[InputRequired("Este campo no puede estar vacio")])
+    retroalimentaciones = SelectField("Retroalimentaciones", coerce=int) 
+    submit = SubmitField("Crear Retroalimentacion")

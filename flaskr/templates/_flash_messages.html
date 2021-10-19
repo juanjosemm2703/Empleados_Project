@@ -1,11 +1,13 @@
 {% macro flash_messages(flashes) %}
 {% with messages = flashes %}
     {% if messages %}
+        <div class="card shadow mb-3 flash-message">
         {% for category, message in messages %}
-        <div class="alert alert-{{ category }}" style="position: absolute;max-width: 90%;font-size: auto; text-align: center;" role="alert">
+        <div class="alert alert-{{ category }}" style="font-size: auto; margin-bottom: 0px; text-align: center;" role="alert">
             {{message}}
         </div>
         {% endfor %}
+        </div>
     {% endif %}
 {% endwith %}
 {% endmacro %}

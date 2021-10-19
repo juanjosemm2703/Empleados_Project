@@ -1,0 +1,32 @@
+:root{
+    --opacity: 50%;
+}
+.stars{
+    display:flex;
+    width:auto;
+    height: auto;
+    text-align: center;
+}
+.stars.disabled{
+    pointer-events: none;
+}
+.fa-star{
+    opacity: var(--opacity);
+    color: var(--bs-blue);
+    cursor: pointer;
+    padding: 3px;
+
+}
+.stars:hover i{
+    opacity: 100%;
+}
+
+.stars i:hover{
+    opacity: 100%;
+}
+.stars i:hover ~ i{
+    opacity: var(--opacity)
+}
+.stars i.active{
+    opacity: 100%;
+}

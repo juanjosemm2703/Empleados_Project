@@ -2,6 +2,7 @@
 {% set active_page = 'Profile' %}
 {% block title %} Profile {% endblock %}
 {% from "_flash_messages.html" import flash_messages %}
+{% from "_retroalimentacion.html" import retroalimentacion %}
 {% block container %}
 <h3 class="text-dark mb-4">{{ current_user.nombre }} {{ current_user.apellido }}</h3>
 <div class="row mb-3">
@@ -135,37 +136,9 @@
             </div>
         </div>
     </div>
-
 </div>
 {% if current_user.idRol == 3 %}
-    {% for r in retroalimentaciones %}
-        <div class="card shadow mb-5">
-            <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold">Retroalimentacion</p>
-            </div>
-                <div class="card-body">
-                    <div class="mb-3" style="margin-bottom: 6px;">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
-                    </div>
-                    <div><textarea readonly id="signature" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;">{{ r.comentario }}. Creada: {{r.fecha.strftime('%Y-%m-%d')}}</textarea></div>
-                    <div class="col">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
-                        <div class="row">
-                            <div class="col">
-                                {% for x in range(1,6) %}
-                                    {% if x <= r.puntaje %}
-                                        <i class="fa fa-star" id="score" value="{{ x }}"></i>
-                                    {% else %}
-                                        <i class="fa fa-star-o" id="score" value="{{ x }}"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-        </div>
-    {% endfor %}
+{{ retroalimentacion(retroalimentaciones, editable=false) }}
 {% endif %}
 
 <div tabindex="-1" data-bs-scroll="true" class="offcanvas offcanvas-end" id="offcanvas-1" aria-labelledby="offcanvas-1">
@@ -206,4 +179,7 @@
         </form>
     </div>
 </div>
+{% endblock %}
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/star.js') }}"> </script>
 {% endblock %}

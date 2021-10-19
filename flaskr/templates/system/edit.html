@@ -3,6 +3,7 @@
 {% set active_page = 'Editar Usuario' %}
 {% from "_error_messages.html" import error_messages %}
 {% from "_flash_messages.html" import flash_messages %}
+{% from "_retroalimentacion.html" import retroalimentacion %}
 {% block container %}
 <h3 class="text-dark mb-4">Editar Empleado: {{usuario.nombre}} {{usuario.apellido}}</h3>
 <form action="{{ url_for('system.edit', usuario_id=usuario.idUsuario ) }}" method="POST" enctype="multipart/form-data">
@@ -12,7 +13,7 @@
                 <div class="card-body text-center shadow">
                     <img id="user_img" class="rounded-circle mb-3 mt-4" src="{% if usuario.image %} {{ url_for('system.uploads', filename=usuario.image) }} {% else %} {{ url_for('static', filename='img/avatars/avatar.jpeg') }} {% endif %}" width="160" height="160">
                     <div class="mb-3">
-                        {{form.hidden_tag() }}
+                        {{form.csrf_token }}
                         {{form.image.label}}
                         {{form.image(class="form-control")}}
                     </div>
@@ -141,41 +142,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card shadow mb-5">
-                <div class="card-header py-3">
-                    <div class="row">
-                        <div class="col">
-                            <p class="text-primary m-0 fw-bold">Retroalimentacion</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3" style="margin-bottom: 6px;">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
-                    </div>
-                    <div><textarea class="form-control" id="signature" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-top: 41px;padding-right: 0px;" placeholder="El empleado genera valor para la empresa ademas de conocimiento para su equipo. Fecha=25/04/21"></textarea></div>
-                    <div class="col">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
-                        <div class="row">
-                            <div class="col"><i class="fa fa-star" id="score-6" value="1"></i><i class="fa fa-star" id="score-7" value="2"></i><i class="fa fa-star" id="score-8" value="3"></i><i class="fa fa-star" id="score-9" value="4"></i><i class="fa fa-star" id="score-10" value="5"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3" style="margin-bottom: 6px;">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Comentarios:</p>
-                    </div>
-                    <div><textarea class="form-control" id="signature-1" rows="" name="signature" style="width: 100%;height: 100%;padding-bottom: 0px;padding-left: 0px;padding-top: 41px;padding-right: 0px;" placeholder="El empleado no genera valor para la empresa ademas de enemistad para su equipo. Fecha=25/04/21"></textarea></div>
-                    <div class="col">
-                        <p class="text-secondary fw-bold" style="margin: auto;">Puntaje:</p>
-                        <div class="row">
-                            <div class="col"><i class="fa fa-star" id="score-1" value="1"></i><i class="fa fa-star-o" id="score-2" value="2"></i><i class="fa fa-star-o" id="score-3" value="3"></i><i class="fa fa-star-o" id="score-4" value="4"></i><i class="fa fa-star-o" id="score-5" value="5"></i></div>
                         </div>
                     </div>
                 </div>
