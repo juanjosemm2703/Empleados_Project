@@ -19,6 +19,9 @@ from flaskr.sqla import sqla
 
 from sqlalchemy import extract
 
+from flask_mail import Message
+from flaskr.mail import mail
+
 
 bp = Blueprint("system", __name__, url_prefix="/system")
 
@@ -397,6 +400,9 @@ def NewUser():
             )
             sqla.session.add(nuevo_usuario)
             sqla.session.commit()
+            msg = Message('USUARIO ACTIVO', sender='empleados.project@gmail.com', recipients=[form.correo.data])
+            msg.html = render_template('email_new_user.html', nombre=form.nombre.data, usuario=form.correo.data)
+            mail.send(msg)
             flash("Usuario creado con exito","success")
             return redirect(url_for('system.table'))
         flash(error, "danger")

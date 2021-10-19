@@ -13,14 +13,14 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}" style="position: absolute;max-width: 90%;margin-top: -70px;font-size: 12px; text-align: center;" role="alert">
+                        <div class="alert alert-{{ category }}" style="position: absolute;max-width: 90%;margin-top: -60px;font-size: 12px; text-align: center;" role="alert">
                             {{message}}
                         </div>
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
                 {{form.hidden_tag() }}
-                {{ form.correo(class="input-100", placeholder= "Correo")}}
+                {{ form.correo(class="input-100", placeholder= "Usuario o Correo Electrónico")}}
                 {{ form.password(class="input-100", placeholder="Contraseña")}}
                 {{ form.submit(class="btn-enviar")}}
                 <a class="form-link" href="{{ url_for('auth.ForgotPassword') }}">¿Olvidó su contraseña?</a>

@@ -43,6 +43,7 @@ class Usuario(UserMixin, sqla.Model):
     
     @validates('correo', 'password', 'nombre', 'apellido', 'cedula', 'fecha_ingreso', 'fecha_contrato', 'tipo_contrato',
                'cargo', 'dependencia', 'salario', 'idRol', 'direccion', 'celular', 'telefono')
+    
     def validate_not_empty(self, key, value):
         if not value:
             raise Exception(f'{key.capitalize()} is required.')

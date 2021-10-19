@@ -2,10 +2,10 @@ from flask import abort, Blueprint, flash, redirect, render_template, request, s
 from flask_login import login_user, current_user
 from urllib.parse import urlparse
 from is_safe_url import is_safe_url
-from flask_mail import Mail, Message
+from flask_mail import Message
 from flaskr.mail import mail
 
-from flaskr.forms import LogInForm
+from flaskr.forms import LogInForm, ForgotPasswordForm
 
 from flaskr.models import Usuario
 
@@ -22,13 +22,13 @@ def login():
         user = Usuario.query.filter_by(correo=correo).first()
 
         if user is None:
-            error = "Correo electrónico incorrecto."
+            error = "Usuario incorrecto."
 
         elif not user.correct_password(password):
-            error = "Contrasena incorrecta."
+            error = "Contraseña incorrecta."
         
         elif not user.estado:
-            error = "Ingrese un correo y una clave válida"
+            error = "Ingrese un usuario y una contraseña válida"
         
         if error is None:
             login_user(user)
@@ -44,22 +44,21 @@ def login():
 
 @bp.route("/forgot_password", methods=("GET", "POST"))
 def ForgotPassword():
-    """Olvido la contrasena"""
+    form = ForgotPasswordForm()
+    """Olvidó la contrasena"""
     try:
         if request.method == "POST":
-            msg = Message('Hola', sender='empleados.project@gmail.com', recipients=['hernandezrodriguez@uninorte.edu.co'])
-            msg.html = render_template('email.html')
+            email = form.email.data
+            msg = Message('RESTABLECER CONTRASEÑA', sender='empleados.project@gmail.com', recipients=[email])
+            msg.html = render_template('email_password.html')
             mail.send(msg)
-            print("Se envio correo")
-            flash("Te enviamos un correo con una contraseña temporal")
+            flash("Te enviamos un email con una contraseña temporal")
             return redirect(url_for('auth.login'))
     except ValueError as e:
             flash(str(e))
-            return render_template('auth/ForgotPassword.html')
+            return render_template('auth/ForgotPassword.html', form=form)
 
-    return render_template("auth/ForgotPassword.html")
-
-
+    return render_template("auth/ForgotPassword.html", form=form)
 
 @bp.route("/logout")
 def logout():

@@ -69,10 +69,8 @@ def create_app(test_config=None):
     
     # Servidor de correo:
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 465
-    app.config['MAIL_USE_SSL'] = True
-    # app.config['MAIL_USERNAME'] = 'empleados.project@gmail.com'
-    # app.config['MAIL_PASSWORD'] = 'Prueba.1234'
+    app.config['MAIL_PORT'] = 587 # Puerto 587 para TLS // Puerto 465 para SSL
+    app.config['MAIL_USE_TLS'] = True
     app.config.from_pyfile('mail.cfg')
     
     mail.init_app(app)
