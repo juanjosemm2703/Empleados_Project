@@ -166,10 +166,10 @@ def retroalimentacion(usuario_id):
 @login_required
 @admin_required
 def dashboard():
-    usuarios= Usuario.query.filter_by(idRol=3).all()
+    usuarios= Usuario.query.filter_by(idRol=3,estado=1).all()
     CantEmpleado= len(usuarios)
 
-    admin= Usuario.query.filter_by(idRol=2).all()
+    admin= Usuario.query.filter_by(idRol=2,estado=1).all()
     CantAdm= len(admin)
 
     Pun = Retroalimentacion.query.filter_by(idEmpleado=2).all()
