@@ -135,7 +135,6 @@ def retroalimentacion(usuario_id):
                 category = "success"
                 
             except Exception as e:
-                print(e)
                 mensaje = "No se pudo generar la retroalimentacion"
                 category = "danger"
                 
