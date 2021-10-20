@@ -30,9 +30,14 @@ class SalarioField(DecimalField):
     widget = PriceInput()
     
 class LogInForm(FlaskForm):
-    correo = StringField('Correo Electronico', validators=[InputRequired("Este campo no puede estar vacio"), DataRequired("Este campo no puede estar vacio")])
+    correo = StringField('Usuario o Correo Electronico', validators=[InputRequired("Este campo no puede estar vacio"), DataRequired("Este campo no puede estar vacio")])
     password = PasswordField('Contraseña', validators=[InputRequired("Este campo no puede estar vacio"), DataRequired("Este campo no puede estar vacio")])
     submit = SubmitField('Iniciar Sesion')
+
+class ForgotPasswordForm(FlaskForm):
+    email = StringField('Correo Electronico', validators=[InputRequired("Este campo no puede estar vacio"), DataRequired("Este campo no puede estar vacio")])
+    submit = SubmitField('Restablecer Contraseña')
+
 
 class FilterForm(FlaskForm):
     name = StringField("Nombre", validators=[Length(max=15)])

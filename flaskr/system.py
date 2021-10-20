@@ -19,6 +19,9 @@ from flaskr.sqla import sqla
 
 from sqlalchemy import extract
 
+from flask_mail import Message
+from flaskr.mail import mail
+
 
 bp = Blueprint("system", __name__, url_prefix="/system")
 
@@ -162,10 +165,10 @@ def retroalimentacion(usuario_id):
 @login_required
 @admin_required
 def dashboard():
-    usuarios= Usuario.query.filter_by(idRol=3).all()
+    usuarios= Usuario.query.filter_by(idRol=3,estado=1).all()
     CantEmpleado= len(usuarios)
 
-    admin= Usuario.query.filter_by(idRol=2).all()
+    admin= Usuario.query.filter_by(idRol=2,estado=1).all()
     CantAdm= len(admin)
 
     Pun = Retroalimentacion.query.filter_by(idEmpleado=2).all()
@@ -396,6 +399,9 @@ def NewUser():
             )
             sqla.session.add(nuevo_usuario)
             sqla.session.commit()
+            msg = Message('USUARIO ACTIVO', sender='empleados.project@gmail.com', recipients=[form.correo.data])
+            msg.html = render_template('email_new_user.html', nombre=form.nombre.data, usuario=form.correo.data)
+            mail.send(msg)
             flash("Usuario creado con exito","success")
             return redirect(url_for('system.table'))
         flash(error, "danger")
