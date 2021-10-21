@@ -43,7 +43,7 @@ var myPieChart = new Chart(MiGrafica2, {
         datasets: [{
             label:"Resultados",
             data: [90,10,40,85,20],
-            backgroundColor: ["#1B5B88", "#21AB19", "#B24519","#CBDF06", "#" ]
+            backgroundColor: ["#4e73df", "#1cc88a", "#36b9cc","#f6c23e", "#e74a3b" ]
         }]
     },
 });
@@ -52,15 +52,44 @@ var MiGrafica3= document.getElementById("grafica3").getContext("2d")
 var chart = new Chart(MiGrafica3,{
     type:"line",
     data:{
-        labels:["Vino","Tequila","Cerveza","Ron"],
+        labels:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
         datasets:[
             {
-                label:"Mi Grafica de Bebidas",
-                background:"rgb(0,0,0)",
-                borderColor:"rgb(255,255,0)",
-                data:[12,39,5,30,0]
+                label:"Adminsitrativo",
+                borderColor:"#4e73df",
+                backgroundColor: "rgb(220,243,104,0)",
+                data:[5,3,2,4,]
+            },
+            {
+                label:"Gerencia",
+                borderColor:"#1cc88a",
+                backgroundColor: "rgb(150,243,104,0)",
+                data:[2,4,3,1]
+            },
+            {
+                label:"Ingeniería",
+                borderColor:"#36b9cc",
+                backgroundColor: "rgb(150,243,104,0)",
+                data:[3,5,2,0]
+            },
+            {
+                label:"Producción",
+                borderColor:"#f6c23e",
+                backgroundColor: "rgb(150,243,104,0)",
+                data:[4,3,5,2]
+            },
+            {
+                label:"Sistemas",
+                borderColor:"#e74a3b",
+                backgroundColor: "rgb(150,243,104,0)",
+                data:[3,1,0,4,0]
             }
+
         ]
+
+      
+                
+        
     }
 
 })
