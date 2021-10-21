@@ -83,20 +83,21 @@
             </div>
             <div class="card-body">
                 <div class="chart-area">
-                    <canvas id="MiGrafica" width="470" height="192"></canvas>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+                    <canvas id="grafica1" width="600" height="192"></canvas>
                     <script>
-                        let miCanvas= document.getElementById("MiGrafica").getContext("2d")
+                        let MiGrafica1= document.getElementById("grafica1").getContext("2d")
                     
-                        var chart = new Chart(miCanvas,{
+                        var chart = new Chart(MiGrafica1,{
                             type:"bar",
                             data:{
-                                labels:["Vino","Tequila","Cerveza","Ron"],
+                                labels:["Vino","Tequila","Cerveza","Ron","Aguardiente"],
                                 datasets:[
                                     {
                                         label:"Mi Grafica de Bebidas",
                                         background:"rgb(0,0,0)",
                                         borderColor:"rgb(255,255,0)",
-                                        data:[12,39,5,30]
+                                        data:[12,39,5,30,55]
                                     }
                                 ]
                             }
@@ -118,10 +119,32 @@
                     </div>
                 </div>
             </div>
+
+            
             <div class="card-body">
-                <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Direct&quot;,&quot;Social&quot;,&quot;Referral&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;50&quot;,&quot;30&quot;,&quot;15&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas></div>
-                <div class="text-center small mt-4"><span class="me-2"><i class="fas fa-circle text-primary"></i>&nbsp;Contable</span><span class="me-2"><i class="fas fa-circle text-success"></i>&nbsp;Administrativo</span><span class="me-2"><i class="fas fa-circle text-info"></i>&nbsp;IT</span></div>
+                <div class="chart-area">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+                    <canvas id="grafica2" width="300" height="200"></canvas>
+                        
+                    <script>
+                        var MiGrafica2 =document.getElementById("grafica2");
+                        var myPieChart = new Chart(MiGrafica2, {
+                            type: "pie",
+                            data: {
+                                labels: ['año', 'mes', 'dia'],
+                                datasets: [{
+                                    label:"Resultados",
+                                    data: [450,200,100],
+                                    backgroundColor: ["#204862", "#757439", "#1c835b"]
+                                }]
+                            },
+                        });
+                    </script>
+                </div>
             </div>
+
+
+
         </div>
     </div>
 </div>
@@ -132,11 +155,11 @@
                 <h6 class="text-primary fw-bold m-0">Proyectos terminados por area</h6>
             </div>
             <div class="card-body">
-                <canvas id="MiGrafica2" width="400" height="190"></canvas>
+                <canvas id="grafica3" width="400" height="190"></canvas>
                     <script>
-                        let miCanvas2= document.getElementById("MiGrafica2").getContext("2d")
+                        let MiGrafica3= document.getElementById("grafica3").getContext("2d")
                     
-                        var chart = new Chart(miCanvas2,{
+                        var chart = new Chart(MiGrafica3,{
                             type:"line",
                             data:{
                                 labels:["Vino","Tequila","Cerveza","Ron"],
@@ -154,43 +177,7 @@
                     </script>
             </div>
         </div>
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="text-primary fw-bold m-0">Todo List</h6>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <div class="row align-items-center no-gutters">
-                        <div class="col me-2">
-                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">10:30 AM</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1"></label></div>
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="row align-items-center no-gutters">
-                        <div class="col me-2">
-                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">11:30 AM</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2"></label></div>
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="row align-items-center no-gutters">
-                        <div class="col me-2">
-                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">12:30 AM</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-3"></label></div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        
     </div>
     <div class="col">
         <div class="row">
@@ -244,5 +231,37 @@
             </div>
         </div>
     </div>
+    
+       
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="text-primary fw-bold m-0">Proyectos terminados por area</h6>
+                </div>
+                <div class="card-body">
+            
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+                    <canvas id="grafica4" width="450" height="80"></canvas>
+                    <script>
+                        let MiGrafica4= document.getElementById("grafica4").getContext("2d")
+                    
+                            var chart = new Chart(MiGrafica4,{
+                                type:"bar",
+                                data:{
+                                    labels:["Vino","Tequila","Cerveza","Ron","Aguardiente"],
+                                    datasets:[
+                                        {
+                                            label:"Mi Grafica de Bebidas",
+                                            background:"rgb(0,0,0)",
+                                            borderColor:"rgb(255,255,0)",
+                                            data:[12,39,5,30,55]
+                                        }
+                                    ]
+                                }
+                        
+                            })
+                    </script>
+                </div>
+            </div>
+        
 </div>
 {% endblock %}
