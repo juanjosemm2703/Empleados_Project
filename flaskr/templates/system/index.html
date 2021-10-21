@@ -82,13 +82,10 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="chart-area">
-                    
+                <!-- <div class="chart-area"> -->
                     <canvas id="grafica1" width="600" height="192"></canvas>
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
-                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>               
-                    
-                </div>
+                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -106,14 +103,12 @@
 
             
             <div class="card-body">
-                <div class="chart-area">
+                <!-- <div class="chart-area"> -->
                     
                     <canvas id="grafica2" width="300" height="200"></canvas>
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
-                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>  
-                        
+                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>    
                     
-                </div>
+                <!-- </div> -->
             </div>
 
 
@@ -129,25 +124,7 @@
             </div>
             <div class="card-body">
                 <canvas id="grafica3" width="400" height="190"></canvas>
-                    <script>
-                        let MiGrafica3= document.getElementById("grafica3").getContext("2d")
-                    
-                        var chart = new Chart(MiGrafica3,{
-                            type:"line",
-                            data:{
-                                labels:["Vino","Tequila","Cerveza","Ron"],
-                                datasets:[
-                                    {
-                                        label:"Mi Grafica de Bebidas",
-                                        background:"rgb(0,0,0)",
-                                        borderColor:"rgb(255,255,0)",
-                                        data:[12,39,5,30]
-                                    }
-                                ]
-                            }
-                    
-                        })
-                    </script>
+                <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script> 
             </div>
         </div>
         
@@ -205,36 +182,17 @@
         </div>
     </div>
     
-       
+        <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="text-primary fw-bold m-0">Proyectos terminados por area</h6>
                 </div>
-                <div class="card-body">
-            
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
-                    <canvas id="grafica4" width="450" height="80"></canvas>
-                    <script>
-                        let MiGrafica4= document.getElementById("grafica4").getContext("2d")
-                    
-                            var chart = new Chart(MiGrafica4,{
-                                type:"bar",
-                                data:{
-                                    labels:["Vino","Tequila","Cerveza","Ron","Aguardiente"],
-                                    datasets:[
-                                        {
-                                            label:"Mi Grafica de Bebidas",
-                                            background:"rgb(0,0,0)",
-                                            borderColor:"rgb(255,255,0)",
-                                            data:[12,39,5,30,55]
-                                        }
-                                    ]
-                                }
-                        
-                            })
-                    </script>
-                </div>
+                    <div class="card-body">
+
+                        <canvas id="grafica4" width="350" height="180"></canvas>
+                        <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script> 
+                    </div>    
             </div>
-        
+        </div>
 </div>
 {% endblock %}
