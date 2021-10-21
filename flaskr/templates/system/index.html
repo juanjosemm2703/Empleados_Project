@@ -83,27 +83,11 @@
             </div>
             <div class="card-body">
                 <div class="chart-area">
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+                    
                     <canvas id="grafica1" width="600" height="192"></canvas>
-                    <script>
-                        let MiGrafica1= document.getElementById("grafica1").getContext("2d")
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>               
                     
-                        var chart = new Chart(MiGrafica1,{
-                            type:"bar",
-                            data:{
-                                labels:["Vino","Tequila","Cerveza","Ron","Aguardiente"],
-                                datasets:[
-                                    {
-                                        label:"Mi Grafica de Bebidas",
-                                        background:"rgb(0,0,0)",
-                                        borderColor:"rgb(255,255,0)",
-                                        data:[12,39,5,30,55]
-                                    }
-                                ]
-                            }
-                    
-                        })
-                    </script>
                 </div>
             </div>
         </div>
@@ -123,23 +107,12 @@
             
             <div class="card-body">
                 <div class="chart-area">
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+                    
                     <canvas id="grafica2" width="300" height="200"></canvas>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>  
                         
-                    <script>
-                        var MiGrafica2 =document.getElementById("grafica2");
-                        var myPieChart = new Chart(MiGrafica2, {
-                            type: "pie",
-                            data: {
-                                labels: ['año', 'mes', 'dia'],
-                                datasets: [{
-                                    label:"Resultados",
-                                    data: [450,200,100],
-                                    backgroundColor: ["#204862", "#757439", "#1c835b"]
-                                }]
-                            },
-                        });
-                    </script>
+                    
                 </div>
             </div>
 
