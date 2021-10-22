@@ -199,7 +199,9 @@ def dashboard():
                                 extract('day', Retroalimentacion.fecha) >= 1).all()
                         
     CantRetro= len(Retro)
-    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro)
+    dataJson = {"cantEmpleados":CantEmpleado, "cantAdministradores":CantAdm, "promedioPuntaje":Prom, "cantRetroalimentacion":CantRetro}
+    dataJson = json.dumps(dataJson)
+    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro, dataJson=dataJson)
 
 
 @bp.route("/table")
