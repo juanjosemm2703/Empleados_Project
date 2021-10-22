@@ -35,7 +35,7 @@ class LogInForm(FlaskForm):
     submit = SubmitField('Iniciar Sesion')
 
 class ForgotPasswordForm(FlaskForm):
-    email = StringField('Correo Electrónico', validators=[InputRequired("Este campo no puede estar vacío"), DataRequired("Este campo no puede estar vacio")])
+    email = EmailField('Correo Electrónico', validators=[InputRequired("Este campo no puede estar vacío"), DataRequired("Este campo no puede estar vacio")])
     submit = SubmitField('Restablecer Contraseña')
 
 
@@ -48,9 +48,9 @@ class FilterForm(FlaskForm):
     submit = SubmitField("Filtro")
 
 class ChangePassword(FlaskForm):
-    oldpassword = PasswordField('* Contraseña antigua', validators=[InputRequired()])
-    password = PasswordField('* Nueva contraseña', validators=[InputRequired(), EqualTo('confirm', message='Contraseñas deben ser iguales')])
-    confirm  = PasswordField('* Confirmar nueva contraseña')
+    oldpassword = PasswordField('* Contraseña actual', validators=[InputRequired("Este campo no puede estar vacio")])
+    password = PasswordField('* Nueva contraseña', validators=[InputRequired("Este campo no puede estar vacio")])
+    confirm  = PasswordField('* Confirmar nueva contraseña', validators=[InputRequired("Este campo no puede estar vacio")])
     submit = SubmitField("Cambiar contraseña")
     
 class NewUserForm(FlaskForm):

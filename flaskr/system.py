@@ -7,7 +7,8 @@ from flask import flash
 from secrets import token_hex
 from datetime import datetime as dt
 
-from werkzeug.utils import secure_filename 
+from werkzeug.utils import secure_filename
+from wtforms.validators import Length 
 from flaskr.models import Usuario, Retroalimentacion, Rol
 from flaskr.forms import FilterForm, NewUserForm, CrearRetroalimentacion
 from flask_login import login_required
@@ -23,6 +24,7 @@ from flask_mail import Message
 from flaskr.mail import mail
 
 import random
+import re
 
 bp = Blueprint("system", __name__, url_prefix="/system")
 
@@ -36,6 +38,15 @@ def generate_random_password():
     muestra = random.sample(base, longitud)
     pwd_random = "".join(muestra)
     return pwd_random
+
+# Validar formato de contraseña:
+def password_validate(password):
+    if 8 <= len(password) <= 20:
+        if re.search('[a.z]', password) and re.search('[A-Z]', password):
+            if re.search('[0-9]', password):
+                if re.search('[@#$%&-_]', password):
+                    return True
+    return False
 
 def admin_required(view):
         @functools.wraps(view)
@@ -283,18 +294,22 @@ def profile():
         error = None
 
         if not current_user.correct_password(oldpassword):
-            error = "Contraseña incorrecta."
+            error = "Contraseña actual incorrecta."
 
         if not password == confirm:
             error = "Las contraseñas no coinciden"
-
+            
+        if password_validate(password) == False:
+            error = ("La contraseña debe tener entre 8 y 20 caracteres; y debe incluir al menos una mayuscula, una minuscula y un caracter especial (@#$%&-_).")
+            
         if error is None:
             current_user.password = password
             sqla.session.commit()
             flash("La contraseña ha sido editada exitosamente", "success")
-            return render_template('system/profile.html', form=form)
-        else:
-            flash(error, "danger")
+            return redirect(url_for('system.profile', form=form))
+        
+        flash(error, "danger")
+        return redirect(url_for('system.profile', form=form))
 
     if current_user.idRol == 3:
         retroalimentaciones = Retroalimentacion.query.filter_by(idEmpleado=current_user.idUsuario).order_by(Retroalimentacion.fecha.desc()).all()
