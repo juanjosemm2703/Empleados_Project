@@ -41,7 +41,6 @@ def login():
 
     return render_template("auth/login.html", form=form)
 
-
 @bp.route("/forgot_password", methods=("GET", "POST"))
 def ForgotPassword():
     form = ForgotPasswordForm()

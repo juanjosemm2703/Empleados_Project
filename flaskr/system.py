@@ -85,11 +85,6 @@ def delete(usuario_id):
     flash(error, "danger")
     return redirect(url_for("system.table"))
 
-@bp.route("/nuevacontraseña")
-@login_required
-def nueva_contrasena():
-    return "Enviar un correo con una nueva contraseña"
-
 
 @bp.route("/retroalimentacion/<int:usuario_id>", methods=("GET", "POST"))
 @login_required
@@ -256,7 +251,7 @@ def table():
             diccionario ={ "tabla": tabla_html, "total_usuarios": total_usuarios, 'usuarios_actuales': len(usuarios)}
             return diccionario
     
-    opciones = usuarios_mostrar(10,1)    
+    opciones = usuarios_mostrar(4,3)    
     return render_template('system/table.html', form=form, usuarios=usuarios, opciones=opciones)
 
 
