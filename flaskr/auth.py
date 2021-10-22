@@ -21,6 +21,7 @@ def login():
         correo = form.correo.data
         password = form.password.data
         error = None
+        
         user = Usuario.query.filter_by(correo=correo).first()
 
         if user is None:
