@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask
-from flask_mail import Mail
 from flaskr.sqla import sqla
 from flask_migrate import Migrate
 from flaskr.login import login_manager

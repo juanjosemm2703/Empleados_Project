@@ -5,6 +5,8 @@
 {% from "_retroalimentacion.html" import retroalimentacion %}
 {% block container %}
 <h3 class="text-dark mb-4">{{ current_user.nombre }} {{ current_user.apellido }}</h3>
+{% set flashes = get_flashed_messages(with_categories=true) %}
+{{ flash_messages(flashes)}}
 <div class="row mb-3">
     <div class="col-lg-4">
         <div class="card mb-3">
@@ -131,8 +133,6 @@
                         </div>
                     </div>
                 </div>
-                {% set flashes = get_flashed_messages(with_categories=true) %}
-                {{ flash_messages(flashes)}}
             </div>
         </div>
     </div>
