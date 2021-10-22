@@ -22,9 +22,20 @@ from sqlalchemy import extract
 from flask_mail import Message
 from flaskr.mail import mail
 
+import random
 
 bp = Blueprint("system", __name__, url_prefix="/system")
 
+# Password aleatorio de letras y números:
+def generate_random_password():
+    min = "abcdefghijklmnñopqrstuvwxyz"
+    may = min.upper()
+    nros = "0123456789"
+    base = min + may + nros
+    longitud = 8
+    muestra = random.sample(base, longitud)
+    pwd_random = "".join(muestra)
+    return pwd_random
 
 def admin_required(view):
         @functools.wraps(view)
@@ -281,6 +292,8 @@ def profile():
         if error is None:
             current_user.password = password
             sqla.session.commit()
+            flash("La contraseña ha sido editada exitosamente", "success")
+            return render_template('system/profile.html', form=form)
         else:
             flash(error, "danger")
 
@@ -380,9 +393,12 @@ def NewUser():
             error = "Ya existe un usuario con estos datos"
         else:
             filename = save_image_upload(form.image)
+            
+            pwd_random = generate_random_password()
+                        
             nuevo_usuario = Usuario(
                 correo = form.correo.data,
-                password  = '123456',
+                password  = pwd_random,
                 nombre = form.nombre.data,
                 apellido = form.apellido.data,
                 cedula = int(form.cedula.data),
@@ -400,8 +416,12 @@ def NewUser():
             )
             sqla.session.add(nuevo_usuario)
             sqla.session.commit()
+            
+            nombre = form.nombre.data
+            usuario = form.correo.data
+            password = pwd_random
             msg = Message('USUARIO ACTIVO', sender='empleados.project@gmail.com', recipients=[form.correo.data])
-            msg.html = render_template('email_new_user.html', nombre=form.nombre.data, usuario=form.correo.data)
+            msg.html = render_template('email_new_user.html', nombre=nombre, usuario=usuario, password=password)
             mail.send(msg)
             flash("Usuario creado con exito","success")
             return redirect(url_for('system.table'))
