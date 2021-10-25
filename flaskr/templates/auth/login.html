@@ -10,15 +10,8 @@
             <img src="/static/img/logo.png" style="display: block;width: 40%;margin: auto;" >
             <h2 class="form-titulo-h2">Bienvenido</h2>
             <div class="cont-inputs">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}" style="position: absolute;margin-top: -60px;font-size: 12px; text-align: center;" role="alert">
-                            {{message}}
-                        </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
+                {% set flashes = get_flashed_messages(with_categories=true) %}
+                {{ flash_messages(flashes)}}
                 {{form.hidden_tag() }}
                 {{ form.correo(class="input-100", placeholder= "Usuario (Correo Electrónico)")}}
                 {{ form.password(class="input-100", placeholder="Contraseña")}}

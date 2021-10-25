@@ -98,11 +98,11 @@
                     {% endif %}
                     {% for i in range(cantidad) %}
                     <tr>
-                        <td>{{ usuarios[i].nombre +" "+ usuarios[i].apellido}}</td>
-                        <td>{{ usuarios[i].nombreRol }}</td>
-                        <td>{{ usuarios[i].cargo }}</td>
-                        <td>{{ usuarios[i].dependencia }}</td>
-                        <td>{{ usuarios[i].fecha_ingreso.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ usuarios[i].nombre | safe +" "+ usuarios[i].apellido | safe}}</td>
+                        <td>{{ usuarios[i].nombreRol | safe }}</td>
+                        <td>{{ usuarios[i].cargo | safe}}</td>
+                        <td>{{ usuarios[i].dependencia | safe }}</td>
+                        <td>{{ usuarios[i].fecha_ingreso.strftime('%Y-%m-%d') | safe}}</td>
                         <td>
                             <div class="row">
                                 <div class="col"><a href="{{ url_for('system.view', usuario_id=usuarios[i].idUsuario) }}"><i

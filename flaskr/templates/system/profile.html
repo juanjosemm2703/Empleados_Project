@@ -2,11 +2,13 @@
 {% set active_page = 'Profile' %}
 {% block title %} Profile {% endblock %}
 {% from "_flash_messages.html" import flash_messages %}
+{% from "_error_messages.html" import error_messages %}
 {% from "_retroalimentacion.html" import retroalimentacion %}
 {% block container %}
-<h3 class="text-dark mb-4">{{ current_user.nombre }} {{ current_user.apellido }}</h3>
+<h3 class="text-dark mb-4">{{ current_user.nombre | safe}} {{ current_user.apellido | safe}}</h3>
 {% set flashes = get_flashed_messages(with_categories=true) %}
 {{ flash_messages(flashes)}}
+{{ error_messages(form.errors) }}
 <div class="row mb-3">
     <div class="col-lg-4">
         <div class="card mb-3">
@@ -22,11 +24,11 @@
             </div>
             <div class="card-body">
                 <h4 class="small fw-bold">Nombre Completo:</h4>
-                <h4 class="small">{{ current_user.nombre }} {{ current_user.apellido }}</h4>
+                <h4 class="small">{{ current_user.nombre | safe}} {{ current_user.apellido | safe}}</h4>
                 <h4 class="small fw-bold">Cédula de Ciudadania:</h4>
                 <h4 class="small">{{ current_user.cedula }}</h4>
                 <h4 class="small fw-bold">Correo Electronico:</h4>
-                <h4 class="small">{{ current_user.correo }}</h4>
+                <h4 class="small">{{ current_user.correo | safe}}</h4>
                 <h4 class="small fw-bold">Id Usuario:</h4>
                 <h4 class="small">{{ current_user.idUsuario }}</h4>
                 <h4 class="small fw-bold">Contraseña<br></h4>                
@@ -48,13 +50,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p>
-                                    <h6>{{ current_user.cargo }}</h6>
+                                    <h6>{{ current_user.cargo | safe}}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p>
-                                    <h6>{{ current_user.dependencia }}</h6>
+                                    <h6>{{ current_user.dependencia | safe}}</h6>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +64,7 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p>
-                                    <h6>{{ current_user.tipo_contrato }}</h6>
+                                    <h6>{{ current_user.tipo_contrato | safe}}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
@@ -95,7 +97,7 @@
                     <div class="card-body">
                         <div>
                             <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p>
-                            <h6> {{ current_user.direccion }}</h6>
+                            <h6> {{ current_user.direccion | safe}}</h6>
                         </div>
                         <div class="row">
                             <div class="col" style="text-align: left;margin: auto;">
@@ -182,4 +184,5 @@
 {% endblock %}
 {% block javascript %}
 <script src="{{ url_for('static', filename='js/star.js') }}"> </script>
+<script src="{{ url_for('static', filename='js/_flash_fadeout.js') }}"> </script>
 {% endblock %}

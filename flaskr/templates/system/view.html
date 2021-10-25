@@ -4,7 +4,7 @@
 {% from "_flash_messages.html" import flash_messages %}
 {% from "_retroalimentacion.html" import retroalimentacion %}
 {% block container %}
-<h3 class="text-dark mb-4">Usuario : {{usuario.nombre}} {{usuario.apellido}} </h3>
+<h3 class="text-dark mb-4">Usuario : {{usuario.nombre | safe}} {{usuario.apellido | safe}} </h3>
 {% set flashes = get_flashed_messages(with_categories=true) %}
 {{ flash_messages(flashes)}}
 <div class="row mb-3">
@@ -22,14 +22,13 @@
             </div>
             <div class="card-body">
                 <h4 class="small fw-bold">Nombre Completo: </h4>
-                <h4 class="small"> {{usuario.nombre}} {{usuario.apellido}}</h4>
+                <h4 class="small"> {{usuario.nombre | safe}} {{usuario.apellido | safe}}</h4>
                 <h4 class="small fw-bold">Cédula de Ciudadania: </h4>
                 <h4 class="small"> {{usuario.cedula}} </h4>
                 <h4 class="small fw-bold">Correo Electronico:</h4>
-                <h4 class="small"> {{usuario.correo }} </h4>
+                <h4 class="small"> {{usuario.correo | safe}} </h4>
                 <h4 class="small fw-bold">Id Usuario:</h4>
-                <h4 class="small">{{usuario.idUsuario}} </hh4>
-                <h4 class="small fw-bold">Contraseña<br></h4>
+                <h4 class="small">{{usuario.idUsuario}} </h4>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -55,13 +54,13 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Cargo:</p>
-                                    <h6> {{usuario.cargo}} </h6>
+                                    <h6> {{usuario.cargo | safe}} </h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Dependencia:</p>
-                                    <h6> {{usuario.dependencia}} </h6>
+                                    <h6> {{usuario.dependencia | safe}} </h6>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +68,7 @@
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Tipo de Contrato:</p>
-                                    <h6> {{usuario.tipo_contrato}} </h6>
+                                    <h6> {{usuario.tipo_contrato | safe}} </h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">
@@ -102,13 +101,13 @@
                     <div class="card-body">
                         <div>
                             <p class="text-secondary fw-bold" style="margin: auto;">Dirección Postal:</p>
-                            <h6>{{usuario.direccion}}</h6>
+                            <h6>{{usuario.direccion | safe}}</h6>
                         </div>
                         <div class="row">
                             <div class="col" style="text-align: left;margin: auto;">
                                 <div>
                                     <p class="text-secondary fw-bold" style="margin: auto;">Celular:</p>
-                                    <h6>{{usuario.celular}}</h6>
+                                    <h6>{{usuario.celular }}</h6>
                                 </div>
                             </div>
                             <div class="col" style="text-align: left;margin: auto;">

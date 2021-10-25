@@ -46,7 +46,7 @@ class Usuario(UserMixin, sqla.Model):
     
     def validate_not_empty(self, key, value):
         if not value:
-            raise Exception(f'{key.capitalize()} is required.')
+            raise Exception(f'{key.capitalize()} es requerido.')
 
         if key == 'correo':
             self.validate_is_unique(key, value, error_message=f'{value} ya registrado')

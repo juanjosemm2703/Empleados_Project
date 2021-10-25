@@ -5,7 +5,7 @@
 {% from "_flash_messages.html" import flash_messages %}
 {% from "_retroalimentacion.html" import retroalimentacion %}
 {% block container %}
-<h3 class="text-dark mb-4">Editar Empleado: {{usuario.nombre}} {{usuario.apellido}}</h3>
+<h3 class="text-dark mb-4">Editar Empleado: {{usuario.nombre | safe}} {{usuario.apellido | safe}}</h3>
 <form action="{{ url_for('system.edit', usuario_id=usuario.idUsuario ) }}" method="POST" enctype="multipart/form-data">
     <div class="row mb-3">
         <div class="col-lg-4">

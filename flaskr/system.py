@@ -1,36 +1,31 @@
+import datetime
 import functools
-from flask import jsonify
 import json
-import os, datetime
-from flask import  Blueprint, send_from_directory, flash, redirect, render_template, request,  url_for, current_app
-from flask import flash
-from secrets import token_hex
+import os
+import random
 from datetime import datetime as dt
+from secrets import token_hex
 
-from werkzeug.utils import secure_filename
-from wtforms.validators import Length 
-from flaskr.models import Usuario, Retroalimentacion, Rol
-from flaskr.forms import FilterForm, NewUserForm, CrearRetroalimentacion
-from flask_login import login_required
+from flask import Blueprint, send_from_directory, redirect, render_template, request, url_for, current_app
+from flask import flash
 from flask_login import current_user
+from flask_login import login_required
+from flask_mail import Message
 from flask_wtf.file import FileRequired
+from sqlalchemy import extract
+from werkzeug.utils import secure_filename, escape, unescape
 
 from flaskr.forms import ChangePassword
-from flaskr.sqla import sqla
-
-from sqlalchemy import extract
-
-from flask_mail import Message
+from flaskr.forms import FilterForm, NewUserForm, CrearRetroalimentacion
 from flaskr.mail import mail
-
-import random
-import re
+from flaskr.models import Usuario, Retroalimentacion, Rol
+from flaskr.sqla import sqla
 
 bp = Blueprint("system", __name__, url_prefix="/system")
 
 # Password aleatorio de letras y números:
 def generate_random_password():
-    min = "abcdefghijklmnñopqrstuvwxyz"
+    min = "abcdefghijklmnopqrstuvwxyz"
     may = min.upper()
     nros = "0123456789"
     base = min + may + nros
@@ -38,15 +33,6 @@ def generate_random_password():
     muestra = random.sample(base, longitud)
     pwd_random = "".join(muestra)
     return pwd_random
-
-# Validar formato de contraseña:
-def password_validate(password):
-    if 8 <= len(password) <= 20:
-        if re.search('[a.z]', password) and re.search('[A-Z]', password):
-            if re.search('[0-9]', password):
-                if re.search('[@#$%&-_]', password):
-                    return True
-    return False
 
 def admin_required(view):
         @functools.wraps(view)
@@ -146,7 +132,7 @@ def retroalimentacion(usuario_id):
                     mensaje = "La retroalimentacion ha sido creada con exito"
                 nueva_retroalimentacion.idEmpleado = usuario.idUsuario
                 nueva_retroalimentacion.idAdministrador = current_user.idUsuario
-                nueva_retroalimentacion.comentario = form.retroalimentacion.data
+                nueva_retroalimentacion.comentario = escape(form.retroalimentacion.data)
                 nueva_retroalimentacion.puntaje = form.puntaje.data
                 nueva_retroalimentacion.fecha = datetime.datetime.utcnow()
                 
@@ -170,7 +156,7 @@ def retroalimentacion(usuario_id):
                 retroalimentacion = json.dumps(retroalimentacion)
                 return retroalimentacion
             else:
-                retroalimentacion = { "comentario": retroalimentacion.comentario, "puntaje": retroalimentacion.puntaje}
+                retroalimentacion = { "comentario": unescape(retroalimentacion.comentario), "puntaje": retroalimentacion.puntaje}
                 retroalimentacion = json.dumps(retroalimentacion)
                 return retroalimentacion
         
@@ -287,17 +273,10 @@ def profile():
     if form.validate_on_submit():
         oldpassword = form.oldpassword.data
         password = form.password.data
-        confirm = form.confirm.data
         error = None
 
         if not current_user.correct_password(oldpassword):
             error = "Contraseña actual incorrecta."
-
-        if not password == confirm:
-            error = "Las contraseñas no coinciden"
-            
-        if password_validate(password) == False:
-            error = ("La contraseña debe tener entre 8 y 20 caracteres; y debe incluir al menos una mayuscula, una minuscula y un caracter especial (@#$%&-_).")
             
         if error is None:
             current_user.password = password
@@ -341,20 +320,20 @@ def edit(usuario_id):
                     filename = save_image_upload(form.image)
                 
                 if usuario.correo != form.correo.data:    
-                    usuario.correo = form.correo.data
+                    usuario.correo = escape(form.correo.data)
                 if usuario.cedula != form.cedula.data: 
                     usuario.cedula = int(form.cedula.data)
-                usuario.nombre = form.nombre.data
-                usuario.apellido = form.apellido.data
+                usuario.nombre = escape(form.nombre.data)
+                usuario.apellido = escape(form.apellido.data)
                 usuario.fecha_ingreso = form.fecha_ingreso.data
                 usuario.fecha_contrato = form.fecha_contrato.data
-                usuario.tipo_contrato = form.tipo_contrato.data
-                usuario.cargo = form.cargo.data
-                usuario.dependencia = form.dependencia.data
+                usuario.tipo_contrato = escape(form.tipo_contrato.data)
+                usuario.cargo = escape(form.cargo.data)
+                usuario.dependencia = escape(form.dependencia.data)
                 usuario.salario = float(form.salario.data)
                 usuario.idRol = int(form.idRol.data)
-                usuario.direccion = form.direccion.data
-                usuario.celular = int(form.celular.data)  
+                usuario.direccion = escape(form.direccion.data)
+                usuario.celular = int(form.celular.data)
                 usuario.telefono = int(form.telefono.data)
                 usuario.image = filename
                 sqla.session.commit()
@@ -364,25 +343,24 @@ def edit(usuario_id):
                 flash(str(e), "danger")
                 return redirect(url_for('system.table'))
             
-        form.correo.data = usuario.correo
-        form.nombre.data = usuario.nombre
-        form.apellido.data = usuario.apellido
+        form.correo.data = unescape(usuario.correo)
+        form.nombre.data = unescape(usuario.nombre)
+        form.apellido.data = unescape(usuario.apellido)
         form.cedula.data = usuario.cedula
         form.fecha_ingreso.data = usuario.fecha_ingreso
         form.fecha_contrato.data = usuario.fecha_contrato
-        form.tipo_contrato.data = usuario.tipo_contrato
-        form.cargo.data = usuario.cargo
-        form.dependencia.data = usuario.dependencia
+        form.tipo_contrato.data = unescape(usuario.tipo_contrato)
+        form.cargo.data = unescape(usuario.cargo)
+        form.dependencia.data = unescape(usuario.dependencia)
         form.salario.data = usuario.salario
         form.idRol.data = usuario.idRol
-        form.direccion.data = usuario.direccion
+        form.direccion.data = unescape(usuario.direccion)
         form.celular.data = usuario.celular
-        form.telefono.data = usuario.telefono  
+        form.telefono.data = usuario.telefono
         return render_template('system/edit.html',usuario=usuario, form=form)
     
     flash(error, "danger")
     return redirect(url_for('system.table'))
-
 
 @bp.route("/newuser", methods=['POST', 'GET'])
 @login_required
@@ -406,29 +384,32 @@ def NewUser():
             filename = save_image_upload(form.image)
             
             pwd_random = generate_random_password()
-                        
-            nuevo_usuario = Usuario(
-                correo = form.correo.data,
-                password  = pwd_random,
-                nombre = form.nombre.data,
-                apellido = form.apellido.data,
-                cedula = int(form.cedula.data),
-                fecha_ingreso = form.fecha_ingreso.data,
-                fecha_contrato = form.fecha_contrato.data,
-                tipo_contrato = form.tipo_contrato.data,
-                cargo = form.cargo.data,
-                dependencia = form.dependencia.data,
-                salario = float(form.salario.data),
-                idRol = int(form.idRol.data),
-                direccion = form.direccion.data,
-                celular = int(form.celular.data),  
-                telefono = int(form.telefono.data),
-                image = filename,
-            )
-            sqla.session.add(nuevo_usuario)
-            sqla.session.commit()
+            try:               
+                nuevo_usuario = Usuario(
+                    correo = escape(form.correo.data),
+                    password  = pwd_random,
+                    nombre = escape(form.nombre.data),
+                    apellido = escape(form.apellido.data),
+                    cedula = int(form.cedula.data),
+                    fecha_ingreso = form.fecha_ingreso.data,
+                    fecha_contrato = form.fecha_contrato.data,
+                    tipo_contrato = escape(form.tipo_contrato.data),
+                    cargo = escape(form.cargo.data),
+                    dependencia = escape(form.dependencia.data),
+                    salario = float(form.salario.data),
+                    idRol = int(form.idRol.data),
+                    direccion = escape(form.direccion.data),
+                    celular = int(form.celular.data),  
+                    telefono = int(form.telefono.data),
+                    image = filename,
+                )
+                sqla.session.add(nuevo_usuario)
+                sqla.session.commit()      
+            except ValueError as e:
+                flash(str(e), "danger")
+                return redirect(url_for('system.table'))
             
-            nombre = form.nombre.data
+            nombre = escape(form.nombre.data)
             usuario = form.correo.data
             password = pwd_random
             msg = Message('USUARIO ACTIVO', sender='empleados.project@gmail.com', recipients=[form.correo.data])

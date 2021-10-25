@@ -1,5 +1,5 @@
 from flask import abort, Blueprint, flash, redirect, render_template, request, session, url_for
-from flask_login import login_user, current_user
+from flask_login import login_user
 from urllib.parse import urlparse
 from is_safe_url import is_safe_url
 from flask_mail import Message
@@ -16,7 +16,6 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     form = LogInForm()
-    """Log in a registered user by adding the user id to the session."""
     if form.validate_on_submit():
         correo = form.correo.data
         password = form.password.data
