@@ -3,3 +3,6 @@
 .png
 .jpeg
 .env
+.idea
+__pycache__
+.drawio
