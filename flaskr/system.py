@@ -207,9 +207,6 @@ def dashboard():
                                 extract('day', Retroalimentacion.fecha) >= 1).all()
                         
     CantRetro= len(Retro)
-<<<<<<< HEAD
-    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro)
-=======
     informacionCajas = {"cantEmpleados":CantEmpleado, "cantAdministradores":CantAdm, "promedioPuntaje":Prom, "cantRetroalimentacion":CantRetro}
     
     datosGrafica1, datosGrafica2=DashGrafica1()
@@ -232,7 +229,6 @@ def DashGrafica1():
     return (datosGrafica1,datosGrafica2)
 
 
->>>>>>> 62429ff374f1f2e492d9148fbce80a74547020f1
 
 
 
