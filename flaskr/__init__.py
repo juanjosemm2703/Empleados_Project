@@ -2,14 +2,11 @@ import os
 
 from flask import Flask
 from flaskr.sqla import sqla
-from flask_migrate import Migrate
 from flaskr.login import login_manager
 from flaskr.mail import mail
 
 
 def create_app(test_config=None):
-    """Creando y configurando la aplicacion Flask."""
-    """directorio base"""
     basedir = os.path.abspath(os.path.dirname(__file__))
     app = Flask(__name__, instance_relative_config=True)
     
@@ -50,9 +47,6 @@ def create_app(test_config=None):
     )
 
     sqla.init_app(app)
-
-    #configurando Flask-Migrate
-    Migrate(app, sqla, render_as_batch=True)
 
     #configurando Flask-Login
     login_manager.init_app(app)

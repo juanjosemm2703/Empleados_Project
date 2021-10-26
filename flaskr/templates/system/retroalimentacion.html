@@ -41,7 +41,9 @@
                             <i class="fa fa-star" title="Excellent" id="score-10" value="5"></i>
                         </div>
                     </div>  
+
                     <div class="col" style="text-align: right;">
+                        <a class="btn btn-danger disabled" id="delete" role="button" onclick="return confirm('Esta seguro que desea eliminar esta retroalimentacion?');">Eliminar</a>
                         {{ form.submit(class="btn btn-primary", style="margin:auto") }}
                     </div>
                 </div>
@@ -52,6 +54,7 @@
 </form>
 {% endblock %}
 {% block javascript %}
+<script src="{{ url_for('static', filename='js/_flash_fadeout.js') }}"> </script>
 <script src="{{ url_for('static', filename='js/star.js') }}"> </script>
 <script src="{{ url_for('static', filename='js/_filter_retroalimentacion.js') }}"> </script>
 {% endblock %}

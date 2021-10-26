@@ -1,4 +1,5 @@
-var MiGrafica1= document.getElementById("grafica1").getContext("2d")
+var MiGrafica1= document.getElementById("grafica1").getContext('2d');
+
 var chart = new Chart(MiGrafica1,{
     type:"bar",
     data:{

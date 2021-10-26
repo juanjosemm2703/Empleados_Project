@@ -93,6 +93,26 @@ def delete(usuario_id):
     flash(error, "danger")
     return redirect(url_for("system.table"))
 
+@bp.route("/delete_retroalimentacion/<int:retroalimentacion_id>/<int:usuario_id>")
+@login_required
+@admin_required
+def delete_retroalimentacion(retroalimentacion_id, usuario_id):
+    error = None
+    retroalimentacion = ""
+ 
+    retroalimentacion = Retroalimentacion.query.filter(Retroalimentacion.idRetroalimentacion == retroalimentacion_id, Retroalimentacion.idEmpleado == usuario_id).first()
+    
+    if not retroalimentacion:
+        error = "La retroalimentacion no se encuentra en la base de datos"
+    
+    if error is None:
+        sqla.session.delete(retroalimentacion)
+        sqla.session.commit()
+        flash("La retroalimentacion fue eliminada con exito", "success")
+        return redirect(url_for("system.retroalimentacion", usuario_id=usuario_id))
+    flash(error, "danger")
+    return redirect(url_for("system.retroalimentacion", usuario_id=usuario_id))
+
 
 @bp.route("/retroalimentacion/<int:usuario_id>", methods=("GET", "POST"))
 @login_required
@@ -134,7 +154,7 @@ def retroalimentacion(usuario_id):
                 nueva_retroalimentacion.idAdministrador = current_user.idUsuario
                 nueva_retroalimentacion.comentario = escape(form.retroalimentacion.data)
                 nueva_retroalimentacion.puntaje = form.puntaje.data
-                nueva_retroalimentacion.fecha = datetime.datetime.utcnow()
+                
                 
                 sqla.session.add(nueva_retroalimentacion)
                 sqla.session.commit()
@@ -152,11 +172,11 @@ def retroalimentacion(usuario_id):
             retroalimentacion = Retroalimentacion.query.filter_by(idRetroalimentacion=int(request.args["id"]),idEmpleado=usuario_id).first()
             retroalimentacion = Retroalimentacion.query.filter_by(idRetroalimentacion=int(request.args["id"]),idEmpleado=usuario_id).first()
             if not retroalimentacion:
-                retroalimentacion = { "comentario": "", "puntaje": "0"}
+                retroalimentacion = { "comentario": "", "puntaje": "0", "href":"", "disabled": True}
                 retroalimentacion = json.dumps(retroalimentacion)
                 return retroalimentacion
             else:
-                retroalimentacion = { "comentario": unescape(retroalimentacion.comentario), "puntaje": retroalimentacion.puntaje}
+                retroalimentacion = { "comentario": unescape(retroalimentacion.comentario), "puntaje": retroalimentacion.puntaje,"href":f"/system/delete_retroalimentacion/{retroalimentacion.idRetroalimentacion}/{usuario_id}", "disabled": False}
                 retroalimentacion = json.dumps(retroalimentacion)
                 return retroalimentacion
         
@@ -185,9 +205,7 @@ def dashboard():
                                 extract('day', Retroalimentacion.fecha) >= 1).all()
                         
     CantRetro= len(Retro)
-    dataJson = {"cantEmpleados":CantEmpleado, "cantAdministradores":CantAdm, "promedioPuntaje":Prom, "cantRetroalimentacion":CantRetro}
-    dataJson = json.dumps(dataJson)
-    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro, dataJson=dataJson)
+    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro)
 
 
 @bp.route("/table")

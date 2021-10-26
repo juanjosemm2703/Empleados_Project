@@ -5,6 +5,7 @@
 <div class="d-sm-flex justify-content-between align-items-center mb-4">
     <h3 class="text-dark mb-0">Dashboard</h3>
     <!-- <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a> -->
+
 </div>
 <div class="row">
     <div class="col-md-6 col-xl-3 mb-4">
@@ -84,8 +85,7 @@
             </div>
             <div class="card-body">
                     <canvas id="grafica4" width="600" height="192"></canvas>
-                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>
-                
+                        
             </div>
         </div>
     </div>
@@ -102,11 +102,8 @@
             </div>
 
             
-            <div class="card-body">
-                    
-                    <canvas id="grafica2" width="300" height="200"></canvas>
-                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>    
-
+            <div class="card-body">          
+                    <canvas id="grafica2" width="300" height="200"></canvas>   
             </div>
 
 
@@ -122,7 +119,6 @@
             </div>
             <div class="card-body">
                 <canvas id="grafica3" width="400" height="190"></canvas>
-                <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script> 
             </div>
         </div>
         
@@ -184,9 +180,7 @@
             <h6 class="text-primary fw-bold m-0">Promedio anual por dependencia</h6>
             </div>
                 <div class="card-body">
-
                     <canvas id="grafica1" width="250" height="50"></canvas>
-                    <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script> 
                 </div>    
             </div>
         </div>
@@ -195,4 +189,7 @@
     
 
 </div>
+{% endblock %}
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script> 
 {% endblock %}

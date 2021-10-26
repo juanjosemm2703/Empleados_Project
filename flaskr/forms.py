@@ -88,4 +88,4 @@ class CrearRetroalimentacion(FlaskForm):
     retroalimentacion = TextAreaField("Comentarios:", validators=[InputRequired("Este campo no puede estar vacio")] )
     puntaje = HiddenField("Puntaje:", validators=[InputRequired("Este campo no puede estar vacio")])
     retroalimentaciones = SelectField("Retroalimentaciones", coerce=int) 
-    submit = SubmitField("Crear Retroalimentacion")
+    submit = SubmitField("Generar Retroalimentacion")
