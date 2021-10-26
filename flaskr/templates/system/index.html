@@ -14,7 +14,7 @@
                 <div class="row align-items-center no-gutters">
                     <div class="col me-2">
                         <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>administradores Activos</span></div>
-                        <div class="text-dark fw-bold h5 mb-0"><span>{{ CantAdmi }}</span></div>
+                        <div class="text-dark fw-bold h5 mb-0"><span>{{informacionCajas.cantAdministradores}}</span></div>
                     </div>
                     <div class="col-auto"><i class="far fa-user fa-2x text-gray-300"></i></div>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="row align-items-center no-gutters">
                     <div class="col me-2">
                         <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Empleados Activos</span></div>
-                        <div class="text-dark fw-bold h5 mb-0"><span>{{ CantEmple }}</span></div>
+                        <div class="text-dark fw-bold h5 mb-0"><span>{{informacionCajas.cantEmpleados}}</span></div>
                     </div>
                     <div class="col-auto"><i class="far fa-user fa-2x text-gray-300"></i></div>
                 </div>
@@ -42,7 +42,7 @@
                         <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Puntaje Promedio último mes</span></div>
                         <div class="row g-0 align-items-center">
                             <div class="col-auto">
-                                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{ PromPunt}}</span></div>
+                                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{informacionCajas.promedioPuntaje}}</span></div>
                             </div>
                             <div class="col">
                                 <div class="progress progress-sm">
@@ -62,7 +62,7 @@
                 <div class="row align-items-center no-gutters">
                     <div class="col me-2">
                         <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span>Retroalimentaciones de este mes</span></div>
-                        <div class="text-dark fw-bold h5 mb-0"><span>{{ CantR }}</span></div>
+                        <div class="text-dark fw-bold h5 mb-0"><span>{{informacionCajas.cantRetroalimentacion}}</span></div>
                             </div>
                                 <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i>
                                     </div>
@@ -84,8 +84,15 @@
                 </div>
             </div>
             <div class="card-body">
+<<<<<<< HEAD
                     <canvas id="grafica4" width="600" height="192"></canvas>
                         
+=======
+               
+                    <canvas id="grafica1" width="600" height="192"></canvas>
+                    
+                
+>>>>>>> 62429ff374f1f2e492d9148fbce80a74547020f1
             </div>
         </div>
     </div>
@@ -102,15 +109,18 @@
             </div>
 
             
+<<<<<<< HEAD
             <div class="card-body">          
                     <canvas id="grafica2" width="300" height="200"></canvas>   
+=======
+            <div class="card-body">
+                    <canvas id="grafica2" width="300" height="200"></canvas>
+>>>>>>> 62429ff374f1f2e492d9148fbce80a74547020f1
             </div>
-
-
-
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 <div class="row">
     <div class="col-lg-6 mb-4">
         <div class="card shadow mb-4">
@@ -120,67 +130,32 @@
             <div class="card-body">
                 <canvas id="grafica3" width="400" height="190"></canvas>
             </div>
+=======
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="text-primary fw-bold m-0">Desempeño mensual</h6>
+>>>>>>> 62429ff374f1f2e492d9148fbce80a74547020f1
         </div>
-        
-    </div>
-    <div class="col">
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="card textwhite bg-primary text-white shadow">
-                    <div class="card-body">
-                        <p class="m-0">Primary</p>
-                        <p class="text-white-50 small m-0">#4e73df</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card textwhite bg-success text-white shadow">
-                    <div class="card-body">
-                        <p class="m-0">Success</p>
-                        <p class="text-white-50 small m-0">#1cc88a</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card textwhite bg-info text-white shadow">
-                    <div class="card-body">
-                        <p class="m-0">Info</p>
-                        <p class="text-white-50 small m-0">#36b9cc</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card textwhite bg-warning text-white shadow">
-                    <div class="card-body">
-                        <p class="m-0">Warning</p>
-                        <p class="text-white-50 small m-0">#f6c23e</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card textwhite bg-danger text-white shadow">
-                    <div class="card-body">
-                        <p class="m-0">Danger</p>
-                        <p class="text-white-50 small m-0">#e74a3b</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card textwhite bg-secondary text-white shadow">
-                    <div class="card-body">
-                        <p class="m-0">Secondary</p>
-                        <p class="text-white-50 small m-0">#858796</p>
-                    </div>
-                </div>
-            </div>
+        <div class="card-body">
+            <canvas id="grafica3" width="250" height="80"></canvas>
+            
         </div>
     </div>
+   
+    
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="text-primary fw-bold m-0">Promedio anual por dependencia</h6>
             </div>
                 <div class="card-body">
+<<<<<<< HEAD
                     <canvas id="grafica1" width="250" height="50"></canvas>
+=======
+
+                    <canvas id="grafica4" width="250" height="50"></canvas>
+                   
+>>>>>>> 62429ff374f1f2e492d9148fbce80a74547020f1
                 </div>    
             </div>
         </div>
@@ -189,7 +164,17 @@
     
 
 </div>
+<<<<<<< HEAD
 {% endblock %}
 {% block javascript %}
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script> 
+=======
+
+{% endblock %}
+{% block javascript %}
+<script> var datosGrafica1 = {{ datosGrafica1 | safe}};</script>
+<script> var datosGrafica2 = {{ datosGrafica2 | safe}};</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>  
+
+>>>>>>> 62429ff374f1f2e492d9148fbce80a74547020f1
 {% endblock %}

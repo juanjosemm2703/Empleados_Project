@@ -12,7 +12,8 @@ def create_app(test_config=None):
     
     app.config.from_mapping(
         #clave secreta
-        SECRET_KEY=os.environ['SECRET_KEY'],
+        # SECRET_KEY=os.environ['SECRET_KEY'],
+        SECRET_KEY=os.urandom(24),
         # base de datos en la carpeta instance
         DATABASE=os.path.join(app.instance_path, "Empleados.sqlite")
     )
