@@ -214,10 +214,10 @@ def dashboard():
     return render_template('system/index.html',informacionCajas=informacionCajas, datosGrafica1=datosGrafica1, datosGrafica2=datosGrafica2)
 
 def DashGrafica1():
-    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestación de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
+    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestacion de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
     grafica1={
             "Indefinido":len(indefinido),"Fijo":len(fijo),"Prestacion":len(prestacion),"HoraLab":len(hora)
-        }
+    }
     
     Cantadmi,Cantgeren,Canting,Cantproducc,Cantsistem=Usuario.query.filter_by(dependencia="Administrativo").all(),Usuario.query.filter_by(dependencia="Gerencia").all(),Usuario.query.filter_by(dependencia="Ingenieria").all(),Usuario.query.filter_by(dependencia="Produccion").all(),Usuario.query.filter_by(dependencia="Sistemas").all()
     grafica2={
