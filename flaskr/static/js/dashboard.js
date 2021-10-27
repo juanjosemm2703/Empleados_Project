@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-var MiGrafica1= document.getElementById("grafica1").getContext('2d');
-
-=======
 /* setInterval(function(){ */ 
 var MiGrafica1= document.getElementById("grafica1").getContext("2d")
->>>>>>> cae1ae959e63a1ecf2a365a1ec87b091270b7890
 var chart = new Chart(MiGrafica1,{
     type:"bar",
     data:{

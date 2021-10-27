@@ -14,13 +14,12 @@ from flask_login import login_required
 from flask_mail import Message
 from flask_wtf.file import FileRequired
 from sqlalchemy import extract
-from sqlalchemy.sql.operators import json_getitem_op
 from werkzeug.utils import secure_filename, escape, unescape
 
 from flaskr.forms import ChangePassword
 from flaskr.forms import FilterForm, NewUserForm, CrearRetroalimentacion
 from flaskr.mail import mail
-from flaskr.models import Usuario, Retroalimentacion, Rol, usuario
+from flaskr.models import Usuario, Retroalimentacion, Rol
 from flaskr.sqla import sqla
 
 bp = Blueprint("system", __name__, url_prefix="/system")
@@ -197,7 +196,7 @@ def dashboard():
 
 
 def DashGrafica():
-    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestación de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
+    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestacion de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
     grafica1={
             "Indefinido":len(indefinido),"Fijo":len(fijo),"Prestacion":len(prestacion),"HoraLab":len(hora)
         }
@@ -230,7 +229,7 @@ def DashGrafica():
             count_S+=1
         
     grafica3={
-        "Administrativo": divisionZero(CA,count_A) ,"Gerencia":divisionZero(CG,count_G),"Ingenieria":divisionZero(CI,count_I),"Produccion":divisionZero(CP,count_P),"Sistemas":divisionZero(CS,count_S)
+        "Administrativo": divisionZero(CA,count_A) ,"Gerencia": divisionZero(CG,count_G),"Ingenieria": divisionZero(CI,count_I),"Produccion": divisionZero(CP,count_P),"Sistemas": divisionZero(CS,count_S)
     }
     
     
@@ -253,6 +252,7 @@ def DashTarjetas():
     for i in Pun:
         sum= sum + i.puntaje
     Prom= sum/len(Pun)
+    Prom = round(Prom,2)
     
     Retro = Retroalimentacion.query.filter(extract('month', Retroalimentacion.fecha) == dt.today().month,
                                 extract('year', Retroalimentacion.fecha) == dt.today().year,
@@ -260,34 +260,7 @@ def DashTarjetas():
                         
     CantRetro= len(Retro)
     informacionCajas = {"cantEmpleados":CantEmpleado, "cantAdministradores":CantAdm, "promedioPuntaje":Prom, "cantRetroalimentacion":CantRetro}
-<<<<<<< HEAD
-    
-    datosGrafica1, datosGrafica2=DashGrafica1()
-    
-    return render_template('system/index.html',informacionCajas=informacionCajas, datosGrafica1=datosGrafica1, datosGrafica2=datosGrafica2)
-
-def DashGrafica1():
-    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestacion de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
-    grafica1={
-            "Indefinido":len(indefinido),"Fijo":len(fijo),"Prestacion":len(prestacion),"HoraLab":len(hora)
-    }
-    
-    Cantadmi,Cantgeren,Canting,Cantproducc,Cantsistem=Usuario.query.filter_by(dependencia="Administrativo").all(),Usuario.query.filter_by(dependencia="Gerencia").all(),Usuario.query.filter_by(dependencia="Ingenieria").all(),Usuario.query.filter_by(dependencia="Produccion").all(),Usuario.query.filter_by(dependencia="Sistemas").all()
-    grafica2={
-        "Administrativo":len(Cantadmi),"Gerencia":len(Cantgeren),"Ingenieria":len(Canting),"Produccion":len(Cantproducc),"Sistemas":len(Cantsistem)
-    }
-        
-    datosGrafica1 = json.dumps(grafica1)
-    datosGrafica2 = json.dumps(grafica2)
-    return (datosGrafica1,datosGrafica2)
-
-
-
-
-=======
     return informacionCajas
->>>>>>> cae1ae959e63a1ecf2a365a1ec87b091270b7890
-
     
 @bp.route("/table")
 @login_required
@@ -360,7 +333,7 @@ def table():
             diccionario ={ "tabla": tabla_html, "total_usuarios": total_usuarios, 'usuarios_actuales': len(usuarios)}
             return diccionario
     
-    opciones = usuarios_mostrar(4,3)    
+    opciones = usuarios_mostrar(5,4)    
     return render_template('system/table.html', form=form, usuarios=usuarios, opciones=opciones)
 
 
@@ -531,7 +504,6 @@ def save_image_upload(image):
 
 def divisionZero(Var1,Var2):
     try:
-        return Var1/Var2
+        return round(Var1/Var2,2)
     except ZeroDivisionError:
         return 0
-
