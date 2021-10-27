@@ -46,7 +46,7 @@ class ForgotPasswordForm(FlaskForm):
     submit = SubmitField('Restablecer Contraseña')
 
 def password_validate(form, field):
-    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%&-_])[A-Za-z\d@#$%&-_]{8,20}$"
+    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$_%&-])[A-Za-z\d@#$_%&-]{8,20}$"
     patron = re.compile(reg)
     match = re.search(patron, field.data)
     if not match:
