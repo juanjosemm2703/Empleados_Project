@@ -40,7 +40,7 @@ var myPieChart = new Chart(MiGrafica2, {
         datasets: [{
             label:"Resultados",
             data: [datosGrafica2.Administrativo, datosGrafica2.Gerencia, datosGrafica2.Ingenieria, datosGrafica2.Produccion,datosGrafica2.Sistemas, 0],
-            backgroundColor: ["#4e73df", "#1cc88a", "#36b9cc","#f6c23e", "#e74a3b" ]
+            backgroundColor: ["#4e73df", "#1cc88a", "#36b9cc","#f6c23e", "#e74a3b" ],
         }]
     },
 })
@@ -48,19 +48,17 @@ var myPieChart = new Chart(MiGrafica2, {
 var MiGrafica3= document.getElementById("grafica3").getContext("2d")
 var chart = new Chart(MiGrafica3,{
     type: 'polarArea',
-   
-data: data = {
+    data: data = {
     labels: ['Administrativo', 'Gerencia', 'Ingenieria', 'Producción', 'Sistemas'],
     datasets: [
-      {
+    {
         label: 'Dataset 1',
         backgroundColor: ['#03C71D', '#BBDC14', '#3EB794', '#A63EB7', '#E669A0'],
         bordercolor: '#051414',
         borderWidth: 1,
         data: [datosGrafica3.Administrativo, datosGrafica3.Gerencia, datosGrafica3.Ingenieria, datosGrafica3.Produccion, datosGrafica3.Sistemas, 0],
-      }
-    ]
-  }
-  
+    }]
+}
+
 })
 /* },10000); */
