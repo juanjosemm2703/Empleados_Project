@@ -20,7 +20,7 @@ from werkzeug.utils import secure_filename, escape, unescape
 from flaskr.forms import ChangePassword
 from flaskr.forms import FilterForm, NewUserForm, CrearRetroalimentacion
 from flaskr.mail import mail
-from flaskr.models import Usuario, Retroalimentacion, Rol
+from flaskr.models import Usuario, Retroalimentacion, Rol, usuario
 from flaskr.sqla import sqla
 
 bp = Blueprint("system", __name__, url_prefix="/system")
@@ -170,6 +170,58 @@ def retroalimentacion(usuario_id):
 @login_required
 @admin_required
 def dashboard():
+    informacionCajas= DashTarjetas()
+    datosGrafica1, datosGrafica2,datosGrafica3=DashGrafica()
+    
+    return render_template('system/index.html',informacionCajas=informacionCajas, datosGrafica1=datosGrafica1, datosGrafica2=datosGrafica2,datosGrafica3=datosGrafica3)
+
+
+def DashGrafica():
+    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestación de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
+    grafica1={
+            "Indefinido":len(indefinido),"Fijo":len(fijo),"Prestacion":len(prestacion),"HoraLab":len(hora)
+        }
+
+    Cantadmi,Cantgeren,Canting,Cantproducc,Cantsistem=Usuario.query.filter_by(dependencia="Administrativo").all(),Usuario.query.filter_by(dependencia="Gerencia").all(),Usuario.query.filter_by(dependencia="Ingenieria").all(),Usuario.query.filter_by(dependencia="Produccion").all(),Usuario.query.filter_by(dependencia="Sistemas").all()
+    grafica2={
+        "Administrativo":len(Cantadmi),"Gerencia":len(Cantgeren),"Ingenieria":len(Canting),"Produccion":len(Cantproducc),"Sistemas":len(Cantsistem)
+    }
+
+
+    dGrafica3 = sqla.session.query(Usuario.dependencia, Retroalimentacion.puntaje).join(Retroalimentacion, Retroalimentacion.idEmpleado == Usuario.idUsuario).all()
+    
+    CA=CG=CI=CP=CS=0
+    count_A=count_G=count_I=count_P=count_S=0
+    for i in dGrafica3:
+        if i[0]=="Administrativo":
+            CA= CA + i[1]
+            count_A+=1
+        elif i[0]=="Gerencia":
+            CG= CG + i[1]
+            count_G+=1
+        elif i[0]=="Ingenieria":
+            CI= CI + i[1]
+            count_I+=1
+        elif i[0]=="Produccion":
+            CP= CP + i[1]
+            count_P+=1
+        elif i[0]=="Sistemas":
+            CS= CS + i[1]
+            count_S+=1
+        
+    grafica3={
+        "Administrativo": divisionZero(CA,count_A) ,"Gerencia":divisionZero(CG,count_G),"Ingenieria":divisionZero(CI,count_I),"Produccion":divisionZero(CP,count_P),"Sistemas":divisionZero(CS,count_S)
+    }
+    
+    
+
+    datosGrafica1 = json.dumps(grafica1)
+    datosGrafica2 = json.dumps(grafica2)
+    datosGrafica3 = json.dumps(grafica3)
+    return datosGrafica1,datosGrafica2,datosGrafica3
+
+
+def DashTarjetas():
     usuarios= Usuario.query.filter_by(idRol=3,estado=1).all()
     CantEmpleado= len(usuarios)
 
@@ -188,29 +240,7 @@ def dashboard():
                         
     CantRetro= len(Retro)
     informacionCajas = {"cantEmpleados":CantEmpleado, "cantAdministradores":CantAdm, "promedioPuntaje":Prom, "cantRetroalimentacion":CantRetro}
-    
-    datosGrafica1, datosGrafica2=DashGrafica1()
-    
-    return render_template('system/index.html',informacionCajas=informacionCajas, datosGrafica1=datosGrafica1, datosGrafica2=datosGrafica2)
-
-def DashGrafica1():
-    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestación de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
-    grafica1={
-            "Indefinido":len(indefinido),"Fijo":len(fijo),"Prestacion":len(prestacion),"HoraLab":len(hora)
-        }
-    
-    Cantadmi,Cantgeren,Canting,Cantproducc,Cantsistem=Usuario.query.filter_by(dependencia="Administrativo").all(),Usuario.query.filter_by(dependencia="Gerencia").all(),Usuario.query.filter_by(dependencia="Ingenieria").all(),Usuario.query.filter_by(dependencia="Produccion").all(),Usuario.query.filter_by(dependencia="Sistemas").all()
-    grafica2={
-        "Administrativo":len(Cantadmi),"Gerencia":len(Cantgeren),"Ingenieria":len(Canting),"Produccion":len(Cantproducc),"Sistemas":len(Cantsistem)
-    }
-        
-    datosGrafica1 = json.dumps(grafica1)
-    datosGrafica2 = json.dumps(grafica2)
-    return (datosGrafica1,datosGrafica2)
-
-
-
-
+    return informacionCajas
 
     
 @bp.route("/table")
@@ -452,3 +482,10 @@ def save_image_upload(image):
     filename = secure_filename(filename)
     image.data.save(os.path.join(current_app.config["IMAGE_UPLOADS"], filename))
     return filename
+
+def divisionZero(Var1,Var2):
+    try:
+        return Var1/Var2
+    except ZeroDivisionError:
+        return 0
+

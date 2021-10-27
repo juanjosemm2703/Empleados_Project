@@ -109,39 +109,26 @@
         </div>
     </div>
 </div>
-
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="text-primary fw-bold m-0">Desempeño mensual</h6>
+    
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="text-primary fw-bold m-0">Promedio anual por dependencia</h6>
         </div>
-        <div class="card-body">
-            <canvas id="grafica3" width="250" height="80"></canvas>
-            
+            <div class="card-body">
+
+                <canvas id="grafica3" width="250" height="100"></canvas>
+                   
+            </div>    
         </div>
     </div>
-   
-    
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="text-primary fw-bold m-0">Promedio anual por dependencia</h6>
-            </div>
-                <div class="card-body">
-
-                    <canvas id="grafica4" width="250" height="50"></canvas>
-                   
-                </div>    
-            </div>
-        </div>
-    </div>   
-        
-    
-
-</div>
+</div>   
 
 {% endblock %}
 {% block javascript %}
-<script> var datosGrafica1 = {{ datosGrafica1 | safe}};</script>
+
+<script>var datosGrafica1 = {{ datosGrafica1 | safe}} </script>
 <script> var datosGrafica2 = {{ datosGrafica2 | safe}};</script>
+<script> var datosGrafica3 = {{ datosGrafica3 | safe}};</script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>  
 
 {% endblock %}
