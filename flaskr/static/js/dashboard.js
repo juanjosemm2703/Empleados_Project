@@ -56,7 +56,7 @@ var chart = new Chart(MiGrafica3,{
         backgroundColor: ['#03C71D', '#BBDC14', '#3EB794', '#A63EB7', '#E669A0'],
         bordercolor: '#051414',
         borderWidth: 1,
-        data: [datosGrafica3.Administrativo, datosGrafica3.Gerencia, datosGrafica3.Ingenieria, datosGrafica3.Produccion, datosGrafica3.Sistemas, 0],
+        data: [datosGrafica3.Administrativo, datosGrafica3.Gerencia, datosGrafica3.Ingenieria, datosGrafica3.Produccion, datosGrafica3.Sistemas],
     }]
 }
 
