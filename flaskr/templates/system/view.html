@@ -33,10 +33,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col" style="text-align: center;">
-                        <a class="btn btn-primary btn-sm" role="button" style="margin: auto;" href="{{ url_for('system.edit', usuario_id=usuario.idUsuario) }}">Editar</a>
+                        <a class="btn btn-primary" role="button" style="margin: auto;" href="{{ url_for('system.edit', usuario_id=usuario.idUsuario) }}">Editar</a>
                     </div>
                     <div class="col" style="text-align: center;">
-                        <a class="btn btn-danger btn-sm" role="button" style="margin: auto;" href="{{ url_for('system.delete', usuario_id=usuario.idUsuario) }}" onclick="return confirm(&#39;Esta seguro de eliminar a este usuario?&#39;);">Eliminar</a>
+                        <a class="btn btn-danger" role="button" style="margin: auto;" href="{{ url_for('system.delete', usuario_id=usuario.idUsuario) }}" onclick="return confirm(&#39;Esta seguro de eliminar a este usuario?&#39;);">Eliminar</a>
                     </div>
                 </div>
             </div>

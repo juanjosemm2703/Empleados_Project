@@ -72,6 +72,8 @@ input {
   border-bottom: 2px solid #dfe7f1;
 }
 
+
+
 .input-login {
   width: 300px;
 }
@@ -90,6 +92,22 @@ input {
   outline: none;
   text-align: center;
   border-bottom: 2px solid #dfe7f1;
+}
+
+a[role="button"] {
+  border: 0;
+  color: white;
+  opacity: 0.95;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+a[role="button"]:hover {
+  opacity: 1;
+}
+
+a[role="button"]:active {
+  transform: scale(0.98);
 }
 
 input[type="submit"] {
