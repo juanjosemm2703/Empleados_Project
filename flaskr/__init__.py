@@ -2,20 +2,20 @@ import os
 
 from flask import Flask
 from flaskr.sqla import sqla
-from flask_migrate import Migrate
 from flaskr.login import login_manager
 from flaskr.mail import mail
+from decouple import config
 
 
 def create_app(test_config=None):
-    """Creando y configurando la aplicacion Flask."""
-    """directorio base"""
     basedir = os.path.abspath(os.path.dirname(__file__))
     app = Flask(__name__, instance_relative_config=True)
     
     app.config.from_mapping(
+        #modo
+        FLASK_DEBUG = config('FLASK_DEBUG', cast=bool),
         #clave secreta
-        SECRET_KEY=os.environ['SECRET_KEY'],
+        SECRET_KEY=config('SECRET_KEY'),
         # base de datos en la carpeta instance
         DATABASE=os.path.join(app.instance_path, "Empleados.sqlite")
     )
@@ -51,9 +51,6 @@ def create_app(test_config=None):
 
     sqla.init_app(app)
 
-    #configurando Flask-Migrate
-    Migrate(app, sqla, render_as_batch=True)
-
     #configurando Flask-Login
     login_manager.init_app(app)
 
@@ -67,11 +64,14 @@ def create_app(test_config=None):
     app.add_url_rule("/", endpoint="auth.login")
     
     # Servidor de correo:
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 587 # Puerto 587 para TLS // Puerto 465 para SSL
-    app.config['MAIL_USE_TLS'] = True
-    app.config.from_pyfile('mail.cfg')
-    
+    app.config.from_mapping(
+        MAIL_SERVER = 'smtp.gmail.com', 
+        MAIL_PORT = 587, # Puerto 587 para TLS // Puerto 465 para SSL
+        MAIL_USE_TLS = True,
+        MAIL_USERNAME = config('MAIL_USERNAME'),
+        MAIL_PASSWORD = config('MAIL_PASSWORD')
+    )
+
     mail.init_app(app)
 
     return app

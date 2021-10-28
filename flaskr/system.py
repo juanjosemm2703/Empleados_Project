@@ -6,6 +6,7 @@ import random
 from datetime import datetime as dt
 from secrets import token_hex
 
+
 from flask import Blueprint, send_from_directory, redirect, render_template, request, url_for, current_app
 from flask import flash
 from flask_login import current_user
@@ -93,6 +94,26 @@ def delete(usuario_id):
     flash(error, "danger")
     return redirect(url_for("system.table"))
 
+@bp.route("/delete_retroalimentacion/<int:retroalimentacion_id>/<int:usuario_id>")
+@login_required
+@admin_required
+def delete_retroalimentacion(retroalimentacion_id, usuario_id):
+    error = None
+    retroalimentacion = ""
+ 
+    retroalimentacion = Retroalimentacion.query.filter(Retroalimentacion.idRetroalimentacion == retroalimentacion_id, Retroalimentacion.idEmpleado == usuario_id).first()
+    
+    if not retroalimentacion:
+        error = "La retroalimentacion no se encuentra en la base de datos"
+    
+    if error is None:
+        sqla.session.delete(retroalimentacion)
+        sqla.session.commit()
+        flash("La retroalimentacion fue eliminada con exito", "success")
+        return redirect(url_for("system.retroalimentacion", usuario_id=usuario_id))
+    flash(error, "danger")
+    return redirect(url_for("system.retroalimentacion", usuario_id=usuario_id))
+
 
 @bp.route("/retroalimentacion/<int:usuario_id>", methods=("GET", "POST"))
 @login_required
@@ -134,7 +155,7 @@ def retroalimentacion(usuario_id):
                 nueva_retroalimentacion.idAdministrador = current_user.idUsuario
                 nueva_retroalimentacion.comentario = escape(form.retroalimentacion.data)
                 nueva_retroalimentacion.puntaje = form.puntaje.data
-                nueva_retroalimentacion.fecha = datetime.datetime.utcnow()
+                
                 
                 sqla.session.add(nueva_retroalimentacion)
                 sqla.session.commit()
@@ -152,11 +173,11 @@ def retroalimentacion(usuario_id):
             retroalimentacion = Retroalimentacion.query.filter_by(idRetroalimentacion=int(request.args["id"]),idEmpleado=usuario_id).first()
             retroalimentacion = Retroalimentacion.query.filter_by(idRetroalimentacion=int(request.args["id"]),idEmpleado=usuario_id).first()
             if not retroalimentacion:
-                retroalimentacion = { "comentario": "", "puntaje": "0"}
+                retroalimentacion = { "comentario": "", "puntaje": "0", "href":"", "disabled": True}
                 retroalimentacion = json.dumps(retroalimentacion)
                 return retroalimentacion
             else:
-                retroalimentacion = { "comentario": unescape(retroalimentacion.comentario), "puntaje": retroalimentacion.puntaje}
+                retroalimentacion = { "comentario": unescape(retroalimentacion.comentario), "puntaje": retroalimentacion.puntaje,"href":f"/system/delete_retroalimentacion/{retroalimentacion.idRetroalimentacion}/{usuario_id}", "disabled": False}
                 retroalimentacion = json.dumps(retroalimentacion)
                 return retroalimentacion
         
@@ -168,6 +189,58 @@ def retroalimentacion(usuario_id):
 @login_required
 @admin_required
 def dashboard():
+    informacionCajas= DashTarjetas()
+    datosGrafica1, datosGrafica2,datosGrafica3=DashGrafica()
+    
+    return render_template('system/index.html',informacionCajas=informacionCajas, datosGrafica1=datosGrafica1, datosGrafica2=datosGrafica2,datosGrafica3=datosGrafica3)
+
+
+def DashGrafica():
+    indefinido,fijo,prestacion,hora=Usuario.query.filter_by(tipo_contrato="Indefinido").all(),Usuario.query.filter_by(tipo_contrato="Fijo").all(),Usuario.query.filter_by(tipo_contrato="Prestacion de Servicios").all(),Usuario.query.filter_by(tipo_contrato="Hora labor").all()
+    grafica1={
+            "Indefinido":len(indefinido),"Fijo":len(fijo),"Prestacion":len(prestacion),"HoraLab":len(hora)
+        }
+
+    Cantadmi,Cantgeren,Canting,Cantproducc,Cantsistem=Usuario.query.filter_by(dependencia="Administrativo").all(),Usuario.query.filter_by(dependencia="Gerencia").all(),Usuario.query.filter_by(dependencia="Ingenieria").all(),Usuario.query.filter_by(dependencia="Produccion").all(),Usuario.query.filter_by(dependencia="Sistemas").all()
+    grafica2={
+        "Administrativo":len(Cantadmi),"Gerencia":len(Cantgeren),"Ingenieria":len(Canting),"Produccion":len(Cantproducc),"Sistemas":len(Cantsistem)
+    }
+
+
+    dGrafica3 = sqla.session.query(Usuario.dependencia, Retroalimentacion.puntaje).join(Retroalimentacion, Retroalimentacion.idEmpleado == Usuario.idUsuario).all()
+    
+    CA=CG=CI=CP=CS=0
+    count_A=count_G=count_I=count_P=count_S=0
+    for i in dGrafica3:
+        if i[0]=="Administrativo":
+            CA= CA + i[1]
+            count_A+=1
+        elif i[0]=="Gerencia":
+            CG= CG + i[1]
+            count_G+=1
+        elif i[0]=="Ingenieria":
+            CI= CI + i[1]
+            count_I+=1
+        elif i[0]=="Produccion":
+            CP= CP + i[1]
+            count_P+=1
+        elif i[0]=="Sistemas":
+            CS= CS + i[1]
+            count_S+=1
+        
+    grafica3={
+        "Administrativo": divisionZero(CA,count_A) ,"Gerencia": divisionZero(CG,count_G),"Ingenieria": divisionZero(CI,count_I),"Produccion": divisionZero(CP,count_P),"Sistemas": divisionZero(CS,count_S)
+    }
+    
+    
+
+    datosGrafica1 = json.dumps(grafica1)
+    datosGrafica2 = json.dumps(grafica2)
+    datosGrafica3 = json.dumps(grafica3)
+    return datosGrafica1,datosGrafica2,datosGrafica3
+
+
+def DashTarjetas():
     usuarios= Usuario.query.filter_by(idRol=3,estado=1).all()
     CantEmpleado= len(usuarios)
 
@@ -179,17 +252,16 @@ def dashboard():
     for i in Pun:
         sum= sum + i.puntaje
     Prom= sum/len(Pun)
+    Prom = round(Prom,2)
     
     Retro = Retroalimentacion.query.filter(extract('month', Retroalimentacion.fecha) == dt.today().month,
                                 extract('year', Retroalimentacion.fecha) == dt.today().year,
                                 extract('day', Retroalimentacion.fecha) >= 1).all()
                         
     CantRetro= len(Retro)
-    dataJson = {"cantEmpleados":CantEmpleado, "cantAdministradores":CantAdm, "promedioPuntaje":Prom, "cantRetroalimentacion":CantRetro}
-    dataJson = json.dumps(dataJson)
-    return render_template('system/index.html',CantEmple=CantEmpleado,CantAdmi=CantAdm,PromPunt=Prom,CantR=CantRetro, dataJson=dataJson)
-
-
+    informacionCajas = {"cantEmpleados":CantEmpleado, "cantAdministradores":CantAdm, "promedioPuntaje":Prom, "cantRetroalimentacion":CantRetro}
+    return informacionCajas
+    
 @bp.route("/table")
 @login_required
 @admin_required
@@ -261,7 +333,7 @@ def table():
             diccionario ={ "tabla": tabla_html, "total_usuarios": total_usuarios, 'usuarios_actuales': len(usuarios)}
             return diccionario
     
-    opciones = usuarios_mostrar(4,3)    
+    opciones = usuarios_mostrar(5,4)    
     return render_template('system/table.html', form=form, usuarios=usuarios, opciones=opciones)
 
 
@@ -429,3 +501,9 @@ def save_image_upload(image):
     filename = secure_filename(filename)
     image.data.save(os.path.join(current_app.config["IMAGE_UPLOADS"], filename))
     return filename
+
+def divisionZero(Var1,Var2):
+    try:
+        return round(Var1/Var2,2)
+    except ZeroDivisionError:
+        return 0

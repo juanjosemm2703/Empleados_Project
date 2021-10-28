@@ -1,4 +1,4 @@
-var estrella = document.querySelector(".stars")
+var estrella = document.querySelector('.stars')
 var estrellas  = document.querySelectorAll('.stars i');
 var score= document.getElementById('puntaje');
 
@@ -16,3 +16,5 @@ estrellas.forEach((star, clickIdx) => {
         score.value = clickIdx+1;
     });
 });
+
+

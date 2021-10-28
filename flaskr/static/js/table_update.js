@@ -22,15 +22,11 @@ $(function(){
     }
 
     function cambio_numeracion(pag, total_usuarios,cantidad_mostrar){
-        console.log(pag)
-        console.log(total_usuarios)
-        console.log(cantidad_mostrar)
         var resultado = Math.ceil((total_usuarios)/(parseInt(cantidad_mostrar)))
-        console.log(resultado)
+
 
         $(".pagination > li").each(function(){
             $(this).removeClass("disabled")
-            console.log($(this).text())
             if($(this).text()==resultado){ 
                 $(this).nextUntil(".cambio_pagina").addClass("disabled")
                 if($(this).text()==parseInt(pag)){

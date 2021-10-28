@@ -46,7 +46,7 @@ class ForgotPasswordForm(FlaskForm):
     submit = SubmitField('Solicitar Contraseña')
 
 def password_validate(form, field):
-    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%&-_])[A-Za-z\d@#$%&-_]{8,20}$"
+    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$_%&-])[A-Za-z\d@#$_%&-]{8,20}$"
     patron = re.compile(reg)
     match = re.search(patron, field.data)
     if not match:
@@ -88,4 +88,4 @@ class CrearRetroalimentacion(FlaskForm):
     retroalimentacion = TextAreaField("Comentarios:", validators=[InputRequired("Este campo no puede estar vacio")] )
     puntaje = HiddenField("Puntaje:", validators=[InputRequired("Este campo no puede estar vacio")])
     retroalimentaciones = SelectField("Retroalimentaciones", coerce=int) 
-    submit = SubmitField("Crear Retroalimentacion")
+    submit = SubmitField("Generar Retroalimentacion")
