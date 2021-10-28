@@ -96,7 +96,6 @@ input {
 
 a[role="button"] {
   border: 0;
-  color: white;
   opacity: 0.95;
   cursor: pointer;
   border-radius: 20px;
