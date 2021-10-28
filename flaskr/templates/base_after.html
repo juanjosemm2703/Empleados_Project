@@ -5,14 +5,14 @@
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" >
             <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" >
-                    <img src="/static/img/logo.png" class="img-fluid" style="width: 150px;" alt="Responsive image">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
+                    <img src="/static/img/logo.png" class="img-fluid" style="width: 150px;margin-top: 50px" alt="Responsive image">
                 </a>    
                 <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
+                <ul class="navbar-nav text-light" id="accordionSidebar" style="margin-top: 50px">
                     <li class="nav-item"><a class="nav-link {{'active' if active_page == 'Profile' else ''}}" href="{{ url_for('system.profile') }}"><i class="fas fa-user"></i><span>Perfil</span></a></li>
                     {% if current_user.idRol == 1 or current_user.idRol == 2 %}
-                    <li class="nav-item"><a class="nav-link {{'active' if active_page == 'Table' else ''}}" href="{{ url_for('system.table') }}"><i class="fas fa-table"></i><span>Tabla</span></a></li>
+                    <li class="nav-item"><a class="nav-link {{'active' if active_page == 'Table' else ''}}" href="{{ url_for('system.table') }}"><i class="fas fa-table"></i><span>Admin</span></a></li>
                     <li class="nav-item"><a class="nav-link {{'active' if active_page == 'Dashboard' else ''}}" href="{{ url_for('system.dashboard') }}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     {% endif %}
                     <li class="nav-item"><a class="nav-link " href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out"></i><span>Cerrar Sesion</span></a></li>

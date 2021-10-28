@@ -48,10 +48,10 @@ def ForgotPassword():
     form = ForgotPasswordForm()
     """Olvidó la contrasena"""
     if form.validate_on_submit():
-        email = form.email.data
-                
+        email = form.email.data             
         password = generate_random_password()
         error = None
+        
         user = Usuario.query.filter_by(correo=email).first()
         
         if user is None:

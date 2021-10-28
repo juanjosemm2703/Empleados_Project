@@ -1,1 +1,3 @@
-$(".flash-message").fadeOut(2500);
+$(".flash-message").fadeOut(5000);
+
+$("#error-msg").fadeOut(5000);

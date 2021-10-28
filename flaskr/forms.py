@@ -39,18 +39,18 @@ class TelField(IntegerField):
 class LogInForm(FlaskForm):
     correo = StringField('Usuario (Correo Electrónico)', validators=[InputRequired("Este campo no puede estar vacío"), DataRequired("Este campo no puede estar vacio")])
     password = PasswordField('Contraseña', validators=[InputRequired("Este campo no puede estar vacío"), DataRequired("Este campo no puede estar vacio")])
-    submit = SubmitField('Iniciar Sesion')
+    submit = SubmitField('Iniciar Sesión')
 
 class ForgotPasswordForm(FlaskForm):
     email = EmailField('Correo Electrónico', validators=[InputRequired("Este campo no puede estar vacío"), DataRequired("Este campo no puede estar vacio")])
-    submit = SubmitField('Restablecer Contraseña')
+    submit = SubmitField('Solicitar Contraseña')
 
 def password_validate(form, field):
     reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%&-_])[A-Za-z\d@#$%&-_]{8,20}$"
     patron = re.compile(reg)
     match = re.search(patron, field.data)
     if not match:
-        raise ValidationError("La contraseña debe tener entre 8 y 20 caracteres; y debe incluir al menos una mayuscula, una minuscula y un caracter especial (@#$%&-_).")
+        raise ValidationError("La contraseña debe tener entre 8 y 20 caracteres; y debe incluir al menos una mayúscula, una minúscula y un caracter especial (@#$%&-_.).")
 
 class FilterForm(FlaskForm):
     name = StringField("Nombre", validators=[Length(max=15)])
@@ -62,7 +62,7 @@ class FilterForm(FlaskForm):
 
 class ChangePassword(FlaskForm):
     oldpassword = PasswordField('* Contraseña actual', validators=[InputRequired("Este campo no puede estar vacio")])
-    password = PasswordField('* Nueva contraseña', validators=[InputRequired("Este campo no puede estar vacio"), password_validate, EqualTo('confirm', message='Contraseñas deben ser iguales')])
+    password = PasswordField('* Nueva contraseña', validators=[InputRequired("Este campo no puede estar vacio"), password_validate, EqualTo('confirm', message='Las contraseñas nuevas deben ser iguales.')])
     confirm  = PasswordField('* Confirmar nueva contraseña', validators=[InputRequired("Este campo no puede estar vacio")])
     submit = SubmitField("Cambiar contraseña")
     

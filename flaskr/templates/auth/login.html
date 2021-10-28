@@ -4,20 +4,21 @@
 {% block title %} Login {% endblock %}
 {% block body %}
 
-<body class="bg-gradient-primary" style="background: url('/static/img/background.png') center / cover no-repeat, var(--bs-gray-200);">
-        <h1 class="form-titulo-h1"></h1>
-        <form class="login-form" action="{{ url_for('auth.login') }}" method="POST">
-            <img src="/static/img/logo.png" style="display: block;width: 40%;margin: auto;" >
-            <h2 class="form-titulo-h2">Bienvenido</h2>
-            <div class="cont-inputs">
+<body style="display:flex;">
+        <form class="form-login" action="{{ url_for('auth.login') }}" method="POST">
+            <img class="img-login" src="/static/img/logo.png" style="display: block;width: 50%;margin: auto;" >
+            <h2>Bienvenido</h2>
+                <div style="margin-bottom: 50px; position: relative; display: flex; flex-wrap: wrap;justify-content: center;">    
                 {% set flashes = get_flashed_messages(with_categories=true) %}
+                <div style="position: absolute;font-size: 12px; width: 100%;">
                 {{ flash_messages(flashes)}}
+                </div>    
+                </div>
                 {{form.hidden_tag() }}
-                {{ form.correo(class="input-100", placeholder= "Usuario (Correo Electrónico)")}}
-                {{ form.password(class="input-100", placeholder="Contraseña")}}
-                {{ form.submit(class="btn-enviar")}}
-                <a class="form-link" href="{{ url_for('auth.ForgotPassword') }}">¿Olvidó su contraseña?</a>
-            </div>
+                {{ form.correo(class="input-login", placeholder= "Usuario (Correo Electrónico)")}}
+                {{ form.password(class="input-login", placeholder="Contraseña")}}
+                {{ form.submit(class="btn-login")}}
+                <a class="link-forgot-pass" href="{{ url_for('auth.ForgotPassword') }}">¿Olvidó su contraseña?</a>
         </form>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/_flash_fadeout.js') }}"> </script>
