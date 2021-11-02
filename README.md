@@ -6,7 +6,7 @@ Los tipos de usuarios que debe manejar el sistema son superadministrador, admini
 El usuario final debe estar en la capacidad poder visualizar su información y una retroalimentación realizada mensualmente por la compañía acerca de su desempeño junto con un puntaje asignado.
 El administrador de la plataforma debe estar en la capacidad de poder agregar usuarios al sistema y gestionar los datos de los mismos.
 Un super administrador ejerce el control total de la plataforma (usuarios y administradores).
-Los datos suministrados por los usuarios deben cumplir la política de privacidad de datos vigente.
+Los datos suministrados por los usuarios deben cumplir la política de privacidad de datos vigente. (version1)
 
 
 ### Requerimientos
@@ -34,19 +34,3 @@ Los datos suministrados por los usuarios deben cumplir la política de privacida
 - Los usuarios pueden salir de la plataforma cuando lo deseen
 - Los empleados tienen una página de visualización diferente a administradores y super administradores
 
-**Table of Contents**
-
-[TOCM]
-
-[TOC]
-
-# Sprint1
-## Diagrama de Caso
-## Diagrama de Uso
-# Sprint2
-## Mapa de Navegacion
-## Mockups
-## Documento de Presentacion
-
-
--------------
